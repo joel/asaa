@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'dotenv/load'
+  require 'dotenv'
+  Dotenv.load('.env.local')
+rescue LoadError
+  puts("No Dotenv")
+end

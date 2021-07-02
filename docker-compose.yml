@@ -18,13 +18,13 @@ services:
       context: .
       dockerfile: ./dockerfiles/Dockerfile.ci
       cache_from:
-        - iwl-development-cache
+        - base-development-cache
       args:
         ARG_RUBY_VERSION: ${ARG_RUBY_VERSION}
         ARG_BUNDLER_VERSION: ${ARG_BUNDLER_VERSION}
         ARG_APP_PATH: ${ARG_APP_PATH}
         ARG_RUBYGEMS_VERSION: ${ARG_RUBYGEMS_VERSION}
-    image: iwl-development:0.1.0
+    image: base-development:${VERSION}
     tmpfs:
       - /tmp
 

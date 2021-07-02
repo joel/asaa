@@ -1,26 +1,34 @@
 #!/usr/bin/env bash
 
-export SERVICE_NAME=iwl
+export CURRENT=`pwd`
+export BASENAME=`basename "$CURRENT"`
 
-export DIR_NAME=images_furry
+export SERVICE_NAME=asaa
+
+export DIR_NAME=#{BASENAME}
 
 export VERSION=0.1.0
 
-export REDIS_PUBLISHED_PORT=6666
+# Forwarded ports
+export REDIS_PUBLISHED_PORT=6666 # Need to be change as well in .env.local
 export PROD_SERVER_PUBLISHED_PORT=3010
 export DEV_SERVER_PUBLISHED_PORT=3005
 
-export DB_PUBLISHED_PORT=3333
+# Database
+export DB_PUBLISHED_PORT=3333 # Need to be change as well in .env.local
 export DB_USER=root
 export DB_PASSWORD=db_password
 export DB_POOL=5
+export DB_PORT=3306
+export DB_HOST=db
 
+# Docker Build Args
 export ARG_APP_PATH=/src
-
 export ARG_RUBY_VERSION=2.7.3
 export ARG_BUNDLER_VERSION=2.2.20
 export ARG_RUBYGEMS_VERSION=3.2.20
 
+# App Runtime Envs
 export RAILS_LOG_TO_STDOUT=true
 export LOG_LEVEL=debug
 export LOG_APPENDER=true

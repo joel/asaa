@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+
+load File.expand_path('../env', __FILE__)
+
 begin
   load File.expand_path('../spring', __FILE__)
 rescue LoadError => e
