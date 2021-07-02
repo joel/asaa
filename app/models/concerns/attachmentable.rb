@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Imageable
+module Attachable
   extend ActiveSupport::Concern
   included do
-    has_many :imageations, as: :imageable, dependent: :destroy
-    has_many :attachments, through: :imageations, dependent: :destroy
+    has_many :extensions, as: :attachable, dependent: :destroy
+    has_many :attachments, through: :extensions, dependent: :destroy
   end
 end
