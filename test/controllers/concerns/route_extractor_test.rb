@@ -17,14 +17,14 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
         @params = ActionController::Parameters.new({ controller: "attachment" })
       end
 
-      test "should return root images url" do
+      test "should return root attachments url" do
         stub(@instance).params { @params }
         behaveable = nil
 
         assert_equal "images_url", @instance.send(:location_url, behaveable: behaveable)
       end
 
-      test "should return nested images url" do
+      test "should return nested attachments url" do
         stub(@instance).params { @params }
         behaveable = stub
         stub(@instance).behaveable_name_from(behaveable) { "user" }
@@ -64,16 +64,16 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     context "without resource" do
       test "should execute route helper images_url" do
         resource = nil
-        mock(@instance).somewhere_url { "/images" }
+        mock(@instance).somewhere_url { "/attachments" }
 
-        assert_equal "/images", @instance.send(:regular, location_url: @location_url, resource: resource)
+        assert_equal "/attachments", @instance.send(:regular, location_url: @location_url, resource: resource)
 
         behaveable = nil
         params = ActionController::Parameters.new({ controller: "attachment" })
         stub(@instance).params { params }
-        mock(@instance).regular(location_url: "images_url", resource: resource) { "/images" }
+        mock(@instance).regular(location_url: "images_url", resource: resource) { "/attachments" }
 
-        assert_equal "/images", @instance.extract(behaveable: behaveable, resource: resource)
+        assert_equal "/attachments", @instance.extract(behaveable: behaveable, resource: resource)
       end
     end
 
@@ -81,16 +81,16 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
       test "with resource" do
         resource = stub
         mock(resource).id { 42 }
-        mock(@instance).somewhere_url(resource) { "/images/42" }
+        mock(@instance).somewhere_url(resource) { "/attachments/42" }
 
-        assert_equal "/images/42", @instance.send(:regular, location_url: @location_url, resource: resource)
+        assert_equal "/attachments/42", @instance.send(:regular, location_url: @location_url, resource: resource)
 
         behaveable = nil
         params = ActionController::Parameters.new({ controller: "attachment", id: 42 })
         stub(@instance).params { params }
-        mock(@instance).regular(location_url: "image_url", resource: resource) { "/images/42" }
+        mock(@instance).regular(location_url: "image_url", resource: resource) { "/attachments/42" }
 
-        assert_equal "/images/42", @instance.extract(behaveable: behaveable, resource: resource)
+        assert_equal "/attachments/42", @instance.extract(behaveable: behaveable, resource: resource)
       end
     end
   end
@@ -116,7 +116,7 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
       test "should return plural name" do
         stub(@instance).params { @params }
         resource = nil
-        assert_equal "images", @instance.send(:resource_name_from, resource)
+        assert_equal "attachments", @instance.send(:resource_name_from, resource)
       end
     end
   end
@@ -136,18 +136,18 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
       test "should execute route helper images_url" do
         resource = nil
         behaveable = User.new
-        mock(@instance).nested_somewhere_url(behaveable) { "/users/24/images" }
+        mock(@instance).nested_somewhere_url(behaveable) { "/users/24/attachments" }
 
-        assert_equal "/users/24/images",
+        assert_equal "/users/24/attachments",
                      @instance.send(:nested, location_url: @location_url, behaveable: behaveable, resource: resource)
 
         params = ActionController::Parameters.new({ controller: "attachment" })
         stub(@instance).params { params }
         mock(@instance).nested(location_url: "user_images_url", behaveable: behaveable, resource: resource) do
-          "/users/24/images"
+          "/users/24/attachments"
         end
 
-        assert_equal "/users/24/images", @instance.extract(behaveable: behaveable, resource: resource)
+        assert_equal "/users/24/attachments", @instance.extract(behaveable: behaveable, resource: resource)
       end
     end
 
@@ -156,18 +156,18 @@ class RouteExtractorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
         resource = stub
         mock(resource).id { 42 }
         behaveable = User.new
-        mock(@instance).nested_somewhere_url(behaveable, resource) { "/users/24/images/42" }
+        mock(@instance).nested_somewhere_url(behaveable, resource) { "/users/24/attachments/42" }
 
-        assert_equal "/users/24/images/42",
+        assert_equal "/users/24/attachments/42",
                      @instance.send(:nested, location_url: @location_url, behaveable: behaveable, resource: resource)
 
         params = ActionController::Parameters.new({ controller: "attachment", id: 42 })
         stub(@instance).params { params }
         mock(@instance).nested(location_url: "user_image_url", behaveable: behaveable, resource: resource) do
-          "/users/24/images/42"
+          "/users/24/attachments/42"
         end
 
-        assert_equal "/users/24/images/42", @instance.extract(behaveable: behaveable, resource: resource)
+        assert_equal "/users/24/attachments/42", @instance.extract(behaveable: behaveable, resource: resource)
       end
     end
   end

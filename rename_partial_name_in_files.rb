@@ -3,7 +3,7 @@ to = ARGV[1]
 
 exit(1) if from.nil? || to.nil?
 
-Dir["./**/*.rb"].each do |file_path|
+Dir["./**/*.{rb,scss,js,erb}"].each do |file_path|
   original_file_name = File.basename(file_path, '.*')
   next unless original_file_name =~ /#{from}/
 

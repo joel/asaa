@@ -6,7 +6,7 @@ class PolymorphicImagesTest < ApplicationSystemTestCase
   setup do
     @user = create(:user)
     @attachment = create(:attachment)
-    @user.images << @attachment
+    @user.attachments << @attachment
   end
 
   test "add attachment" do

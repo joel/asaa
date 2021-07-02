@@ -21,7 +21,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
         it "should get index json" do
           get images_url(format: :json)
           assert_response :success
-          assert_match %r{^http://www.example.com/images}, @response.location
+          assert_match %r{^http://www.example.com/attachments}, @response.location
           assert_match @attachment.name, JSON.parse(@response.body)[0]["name"]
         end
       end
@@ -29,14 +29,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       context "with a behaveable" do
         setup do
           @user = create(:user)
-          @user.images << @attachment
+          @user.attachments << @attachment
         end
 
         context "json" do
           it "should get index json" do
             get images_url(user_id: @user.id, format: :json)
             assert_response :success
-            assert_match %r{^http://www.example.com/users/(\d+)/images}, @response.location
+            assert_match %r{^http://www.example.com/users/(\d+)/attachments}, @response.location
             assert_match @attachment.name, JSON.parse(@response.body)[0]["name"]
           end
         end

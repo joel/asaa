@@ -6,7 +6,7 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     @attachment = create(:attachment)
-    @user.images << @attachment
+    @user.attachments << @attachment
   end
 
   describe "#index" do
@@ -23,7 +23,7 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
         it "should get index json" do
           get user_images_url(user_id: @user.id, format: :json)
           assert_response :success
-          assert_match %r{^http://www.example.com/users/(\d+)/images}, @response.location
+          assert_match %r{^http://www.example.com/users/(\d+)/attachments}, @response.location
           assert_match @attachment.name, JSON.parse(@response.body)[0]["name"]
         end
       end
@@ -33,11 +33,11 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
     get new_user_image_url(user_id: @user.id)
     assert_response :success
-    assert_match %r{^http://www.example.com/users/(\d+)/images/new}, @request.url
+    assert_match %r{^http://www.example.com/users/(\d+)/attachments/new}, @request.url
   end
 
   test "should create attachment" do
-    assert_difference -> { @user.images.count } => +1 do
+    assert_difference -> { @user.attachments.count } => +1 do
       post user_images_url(user_id: @user.id), params: { attachment: { name: @attachment.name } }
     end
 
@@ -47,13 +47,13 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
   test "should show attachment" do
     get user_image_url(@user, @attachment)
     assert_response :success
-    assert_match %r{^http://www.example.com/users/(\d+)/images/(\d+)}, @response.location
+    assert_match %r{^http://www.example.com/users/(\d+)/attachments/(\d+)}, @response.location
   end
 
   test "should get edit" do
     get edit_user_image_url(@user, @attachment)
     assert_response :success
-    assert_match %r{^http://www.example.com/users/(\d+)/images/(\d+)/edit}, @response.location
+    assert_match %r{^http://www.example.com/users/(\d+)/attachments/(\d+)/edit}, @response.location
   end
 
   test "should update attachment" do
@@ -62,7 +62,7 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy attachment" do
-    assert_difference -> { @user.images.count } => -1 do
+    assert_difference -> { @user.attachments.count } => -1 do
       delete user_image_url(@user, @attachment)
     end
 

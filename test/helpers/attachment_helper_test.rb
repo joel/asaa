@@ -8,8 +8,8 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
   describe "#nested_helper_url" do
     context "without resource" do
       test "should render route helper url" do
-        resource_name = "images"
-        location_url  = "/images"
+        resource_name = "attachments"
+        location_url  = "/attachments"
         mock(self).location_url(resource_name: resource_name, action: nil, behaveable: nil, resource: nil) do
           location_url
         end
@@ -21,8 +21,8 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
 
     context "with resource" do
       test "with resource" do
-        resource_name = "images"
-        location_url  = "/users/42/images"
+        resource_name = "attachments"
+        location_url  = "/users/42/attachments"
         resource = nil
         behaveable = stub
         mock(self).location_url(resource_name: resource_name, action: nil, behaveable: behaveable,
@@ -44,8 +44,8 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
     context "without resource" do
       test "should render route helper url" do
         behaveable = stub
-        mock(self).somewhere_url(behaveable) { "/users/42/images" }
-        assert_equal "/users/42/images", send(:nested, location_url: @location_url, behaveable: behaveable)
+        mock(self).somewhere_url(behaveable) { "/users/42/attachments" }
+        assert_equal "/users/42/attachments", send(:nested, location_url: @location_url, behaveable: behaveable)
       end
     end
 
@@ -54,9 +54,9 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         resource   = stub
         behaveable = stub
         # mock(resource).id { nil }
-        mock(self).somewhere_url(behaveable, resource) { "/users/42/images/24" }
+        mock(self).somewhere_url(behaveable, resource) { "/users/42/attachments/24" }
 
-        assert_equal "/users/42/images/24",
+        assert_equal "/users/42/attachments/24",
                      send(:nested, location_url: @location_url, behaveable: behaveable, resource: resource)
       end
     end
@@ -69,37 +69,37 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
 
     context "without resource" do
       test "should render route helper url" do
-        mock(self).somewhere_url { "/images" }
-        assert_equal "/images", send(:regular, location_url: @location_url)
+        mock(self).somewhere_url { "/attachments" }
+        assert_equal "/attachments", send(:regular, location_url: @location_url)
       end
     end
 
     context "with resource" do
       test "with resource" do
         resource = stub
-        mock(self).somewhere_url(resource) { "/images/42" }
+        mock(self).somewhere_url(resource) { "/attachments/42" }
 
-        assert_equal "/images/42", send(:regular, location_url: @location_url, resource: resource)
+        assert_equal "/attachments/42", send(:regular, location_url: @location_url, resource: resource)
       end
     end
   end
 
   describe "#location_url" do # rubocop:disable Metrics/BlockLength
     context "without resource" do
-      test "should return root images url" do
-        assert_equal "images_url", send(:location_url, resource_name: "images")
+      test "should return root attachments url" do
+        assert_equal "images_url", send(:location_url, resource_name: "attachments")
       end
 
-      test "should return nested images url" do
+      test "should return nested attachments url" do
         behaveable = stub
         stub(self).behaveable_name_from(behaveable) { "user" }
 
-        assert_equal "user_images_url", send(:location_url, resource_name: "images", behaveable: behaveable)
+        assert_equal "user_images_url", send(:location_url, resource_name: "attachments", behaveable: behaveable)
       end
 
       test "should raise an error as edit route need a resource" do
         assert_raises(ImagesHelper::RouteHelperError) do
-          send(:location_url, resource_name: "images", action: "edit")
+          send(:location_url, resource_name: "attachments", action: "edit")
         end
       end
 
@@ -108,13 +108,13 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         mock(resource).id { 42 } # persited resource
 
         assert_raises(ImagesHelper::RouteHelperError) do
-          send(:location_url, resource_name: "images", action: "new", resource: resource)
+          send(:location_url, resource_name: "attachments", action: "new", resource: resource)
         end
       end
 
       test "should raise an error as new route need a resource" do
         assert_raises(ImagesHelper::RouteHelperError) do
-          send(:location_url, resource_name: "images", action: "new")
+          send(:location_url, resource_name: "attachments", action: "new")
         end
       end
     end
@@ -123,20 +123,20 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
       test "should return root attachment url" do
         resource = stub
 
-        assert_equal "image_url", send(:location_url, resource_name: "images", resource: resource)
+        assert_equal "image_url", send(:location_url, resource_name: "attachments", resource: resource)
       end
 
       test "should return root edit attachment url" do
         resource = stub
 
-        assert_equal "edit_image_url", send(:location_url, resource_name: "images", resource: resource, action: "edit")
+        assert_equal "edit_image_url", send(:location_url, resource_name: "attachments", resource: resource, action: "edit")
       end
 
       test "should return root new attachment url" do
         resource = stub
         mock(resource).id { nil }
 
-        assert_equal "new_image_url", send(:location_url, resource_name: "images", resource: resource, action: "new")
+        assert_equal "new_image_url", send(:location_url, resource_name: "attachments", resource: resource, action: "new")
       end
 
       test "should return nested attachment url" do
@@ -144,7 +144,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         resource = stub
 
         assert_equal "user_image_url",
-                     send(:location_url, resource_name: "images", behaveable: behaveable, resource: resource)
+                     send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource)
       end
 
       test "should return nested edit attachment url" do
@@ -152,7 +152,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         resource = stub
 
         assert_equal "edit_user_image_url",
-                     send(:location_url, resource_name: "images", behaveable: behaveable, resource: resource,
+                     send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource,
                                          action: "edit")
       end
 
@@ -162,7 +162,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         mock(resource).id { nil }
 
         assert_equal "new_user_image_url",
-                     send(:location_url, resource_name: "images", behaveable: behaveable, resource: resource,
+                     send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource,
                                          action: "new")
       end
     end
@@ -172,14 +172,14 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
     context "singular" do
       test "should return singular name" do
         resource = stub
-        assert_equal "attachment", send(:resource_name_inflection, resource_name: "images", resource: resource)
+        assert_equal "attachment", send(:resource_name_inflection, resource_name: "attachments", resource: resource)
       end
     end
 
     context "plural" do
       test "should return plural name" do
         resource = nil
-        assert_equal "images", send(:resource_name_inflection, resource_name: "images", resource: resource)
+        assert_equal "attachments", send(:resource_name_inflection, resource_name: "attachments", resource: resource)
       end
     end
   end

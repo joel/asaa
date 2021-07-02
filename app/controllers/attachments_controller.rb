@@ -6,17 +6,17 @@ class ImagesController < ApplicationController
 
   before_action :set_image, only: %i[show edit update destroy]
 
-  # GET /images or /images.json
+  # GET /attachments or /attachments.json
   def index
-    @images = imageable.all
+    @attachments = imageable.all
 
     respond_to do |format|
       format.html { render :index, status: :ok, location: extract(behaveable: @behaveable) }
-      format.json { render json: @images, status: :ok, location: extract(behaveable: @behaveable) }
+      format.json { render json: @attachments, status: :ok, location: extract(behaveable: @behaveable) }
     end
   end
 
-  # GET /images/1 or /images/1.json
+  # GET /attachments/1 or /attachments/1.json
   def show
     respond_to do |format|
       format.html { render :show, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
@@ -24,7 +24,7 @@ class ImagesController < ApplicationController
     end
   end
 
-  # GET /images/new
+  # GET /attachments/new
   def new
     @attachment = imageable.new
     respond_to do |format|
@@ -33,7 +33,7 @@ class ImagesController < ApplicationController
     end
   end
 
-  # GET /images/1/edit
+  # GET /attachments/1/edit
   def edit
     respond_to do |format|
       format.html { render :edit, status: :ok, location: extract(behaveable: @behaveable, resource: @attachment) }
@@ -46,7 +46,7 @@ class ImagesController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
 
-  # POST /images or /images.json
+  # POST /attachments or /attachments.json
   def create
     @attachment = imageable.new(image_params)
 
@@ -80,7 +80,7 @@ class ImagesController < ApplicationController
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 
-  # PATCH/PUT /images/1 or /images/1.json
+  # PATCH/PUT /attachments/1 or /attachments/1.json
   def update # rubocop:disable Metrics/MethodLength
     respond_to do |format|
       if @attachment.update(image_params)
@@ -101,7 +101,7 @@ class ImagesController < ApplicationController
     end
   end
 
-  # DELETE /images/1 or /images/1.json
+  # DELETE /attachments/1 or /attachments/1.json
   def destroy
     @attachment.destroy
     respond_to do |format|
@@ -115,10 +115,10 @@ class ImagesController < ApplicationController
   # Get Attachment context object.
   #
   # ==== Returns
-  # * <tt>ActiveRecord</tt> - Imageable's images or Attachment.
+  # * <tt>ActiveRecord</tt> - Imageable's attachments or Attachment.
   def imageable
     @behaveable ||= behaveable
-    @behaveable ? @behaveable.images : Attachment
+    @behaveable ? @behaveable.attachments : Attachment
   end
 
   # Use callbacks to share common setup or constraints between actions.

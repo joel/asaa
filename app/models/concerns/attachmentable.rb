@@ -4,6 +4,6 @@ module Imageable
   extend ActiveSupport::Concern
   included do
     has_many :imageations, as: :imageable, dependent: :destroy
-    has_many :images, through: :imageations, dependent: :destroy
+    has_many :attachments, through: :imageations, dependent: :destroy
   end
 end

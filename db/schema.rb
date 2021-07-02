@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2021_06_18_104731) do
     t.index ["imageable_type", "imageable_id"], name: "index_imageations_on_imageable_type_and_imageable_id"
   end
 
-  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
