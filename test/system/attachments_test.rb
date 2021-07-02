@@ -9,7 +9,7 @@ class ImagesTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit images_url
-    assert_selector "h1", text: "Images"
+    assert_selector "h1", text: "Attachments"
   end
 
   test "creating a Attachment" do

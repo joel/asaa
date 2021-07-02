@@ -20,7 +20,7 @@ class PolymorphicImagesTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit user_images_url(user_id: @user)
-    assert_selector "h1", text: "Images"
+    assert_selector "h1", text: "Attachments"
   end
 
   test "creating a Attachment" do
