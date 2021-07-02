@@ -5,7 +5,7 @@
   <%= @post.name %>
   <% if @post.header_picture.attached? %>
     <% if @post.header_picture.variable? %>
-      <%= image_tag url_for(@post.header_picture.variant(resize: "500x500").processed), class: "image-#{@post.id}" %>
+      <%= image_tag url_for(@post.header_picture.variant(resize: "500x500").processed), class: "attachment-#{@post.id}" %>
     <% else %>
       <%= image_tag url_for(@post.header_picture), class: "variant-1" %>
     <% end %>

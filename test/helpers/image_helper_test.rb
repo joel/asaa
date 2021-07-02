@@ -120,26 +120,26 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
     end
 
     context "with resource" do # rubocop:disable Metrics/BlockLength
-      test "should return root image url" do
+      test "should return root attachment url" do
         resource = stub
 
         assert_equal "image_url", send(:location_url, resource_name: "images", resource: resource)
       end
 
-      test "should return root edit image url" do
+      test "should return root edit attachment url" do
         resource = stub
 
         assert_equal "edit_image_url", send(:location_url, resource_name: "images", resource: resource, action: "edit")
       end
 
-      test "should return root new image url" do
+      test "should return root new attachment url" do
         resource = stub
         mock(resource).id { nil }
 
         assert_equal "new_image_url", send(:location_url, resource_name: "images", resource: resource, action: "new")
       end
 
-      test "should return nested image url" do
+      test "should return nested attachment url" do
         behaveable = build(:user)
         resource = stub
 
@@ -147,7 +147,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
                      send(:location_url, resource_name: "images", behaveable: behaveable, resource: resource)
       end
 
-      test "should return nested edit image url" do
+      test "should return nested edit attachment url" do
         behaveable = build(:user)
         resource = stub
 
@@ -156,7 +156,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
                                          action: "edit")
       end
 
-      test "should return nested new image url" do
+      test "should return nested new attachment url" do
         behaveable = build(:user)
         resource = stub
         mock(resource).id { nil }
@@ -172,7 +172,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
     context "singular" do
       test "should return singular name" do
         resource = stub
-        assert_equal "image", send(:resource_name_inflection, resource_name: "images", resource: resource)
+        assert_equal "attachment", send(:resource_name_inflection, resource_name: "images", resource: resource)
       end
     end
 

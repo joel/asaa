@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Image < ApplicationRecord
+class Attachment < ApplicationRecord
   has_many :imageations, dependent: :destroy
 
   has_one_attached :attachment, dependent: :destroy

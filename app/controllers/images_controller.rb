@@ -19,26 +19,26 @@ class ImagesController < ApplicationController
   # GET /images/1 or /images/1.json
   def show
     respond_to do |format|
-      format.html { render :show, status: :ok, location: polymorphic_url([@behaveable, @image]) }
-      format.json { render json: @image, status: :ok, location: polymorphic_url([@behaveable, @image]) }
+      format.html { render :show, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
+      format.json { render json: @attachment, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
     end
   end
 
   # GET /images/new
   def new
-    @image = imageable.new
+    @attachment = imageable.new
     respond_to do |format|
-      format.html { render :new, status: :ok, location: polymorphic_url([@behaveable, @image]) }
-      format.json { render json: @image, status: :ok, location: polymorphic_url([@behaveable, @image]) }
+      format.html { render :new, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
+      format.json { render json: @attachment, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
     end
   end
 
   # GET /images/1/edit
   def edit
     respond_to do |format|
-      format.html { render :edit, status: :ok, location: extract(behaveable: @behaveable, resource: @image) }
+      format.html { render :edit, status: :ok, location: extract(behaveable: @behaveable, resource: @attachment) }
       format.json do
-        render json: @image, status: :ok, location: extract(behaveable: @behaveable, resource: @image)
+        render json: @attachment, status: :ok, location: extract(behaveable: @behaveable, resource: @attachment)
       end
     end
   end
@@ -48,29 +48,29 @@ class ImagesController < ApplicationController
 
   # POST /images or /images.json
   def create
-    @image = imageable.new(image_params)
+    @attachment = imageable.new(image_params)
 
     respond_to do |format|
-      @image.transaction do
-        if @image.save
-          imageable << @image if @behaveable
+      @attachment.transaction do
+        if @attachment.save
+          imageable << @attachment if @behaveable
 
-          @image.attachment.attach(params[:image][:attachment]) if params[:image][:attachment]
-          @image.attachment.analyze if @image.attachment.attached?
+          @attachment.attachment.attach(params[:attachment][:attachment]) if params[:attachment][:attachment]
+          @attachment.attachment.analyze if @attachment.attachment.attached?
 
           format.html do
-            redirect_to polymorphic_url([@behaveable, @image]), notice: "Image was successfully created."
+            redirect_to polymorphic_url([@behaveable, @attachment]), notice: "Attachment was successfully created."
           end
           format.json do
-            render json: @image, status: :created, location: polymorphic_url([@behaveable, @image])
+            render json: @attachment, status: :created, location: polymorphic_url([@behaveable, @attachment])
           end
         else
           format.html do
-            render :new, status: :unprocessable_entity, location: polymorphic_url([@behaveable, @image])
+            render :new, status: :unprocessable_entity, location: polymorphic_url([@behaveable, @attachment])
           end
           format.json do
-            render json: @image.errors, status: :unprocessable_entity,
-                   location: polymorphic_url([@behaveable, @image])
+            render json: @attachment.errors, status: :unprocessable_entity,
+                   location: polymorphic_url([@behaveable, @attachment])
           end
         end
       end
@@ -83,19 +83,19 @@ class ImagesController < ApplicationController
   # PATCH/PUT /images/1 or /images/1.json
   def update # rubocop:disable Metrics/MethodLength
     respond_to do |format|
-      if @image.update(image_params)
+      if @attachment.update(image_params)
         format.html do
-          redirect_to polymorphic_url([@behaveable, @image]), notice: "Image was successfully updated."
+          redirect_to polymorphic_url([@behaveable, @attachment]), notice: "Attachment was successfully updated."
         end
-        format.json { render :edit, status: :ok, location: polymorphic_url([@behaveable, @image]) }
+        format.json { render :edit, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
       else
         format.html do
           render :edit, status: :unprocessable_entity,
-                        location: polymorphic_url([@behaveable, @image])
+                        location: polymorphic_url([@behaveable, @attachment])
         end
         format.json do
-          render json: @image.errors, status: :unprocessable_entity,
-                 location: polymorphic_url([@behaveable, @image])
+          render json: @attachment.errors, status: :unprocessable_entity,
+                 location: polymorphic_url([@behaveable, @attachment])
         end
       end
     end
@@ -103,32 +103,32 @@ class ImagesController < ApplicationController
 
   # DELETE /images/1 or /images/1.json
   def destroy
-    @image.destroy
+    @attachment.destroy
     respond_to do |format|
-      format.html { redirect_to extract(behaveable: @behaveable), notice: "Image was successfully destroyed." }
+      format.html { redirect_to extract(behaveable: @behaveable), notice: "Attachment was successfully destroyed." }
       format.json { head :no_content, location: extract(behaveable: @behaveable) }
     end
   end
 
   private
 
-  # Get Image context object.
+  # Get Attachment context object.
   #
   # ==== Returns
-  # * <tt>ActiveRecord</tt> - Imageable's images or Image.
+  # * <tt>ActiveRecord</tt> - Imageable's images or Attachment.
   def imageable
     @behaveable ||= behaveable
-    @behaveable ? @behaveable.images : Image
+    @behaveable ? @behaveable.images : Attachment
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image
-    @image = imageable.find(params[:id])
+    @attachment = imageable.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def image_params
-    params.require(:image).permit(
+    params.require(:attachment).permit(
       :name,
       :attachment
     )

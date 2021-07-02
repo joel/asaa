@@ -5,16 +5,16 @@ require "application_system_test_case"
 class PolymorphicImagesTest < ApplicationSystemTestCase
   setup do
     @user = create(:user)
-    @image = create(:image)
-    @user.images << @image
+    @attachment = create(:attachment)
+    @user.images << @attachment
   end
 
-  test "add image" do
+  test "add attachment" do
     visit users_url
     assert_selector "h1", text: "Users"
 
-    click_on "Add Image", match: :first
-    fill_in "Name", with: @image.name
+    click_on "Add Attachment", match: :first
+    fill_in "Name", with: @attachment.name
     attach_file "image_attachment", Rails.root.join("test/fixtures/favicon.ico")
   end
 
@@ -23,33 +23,33 @@ class PolymorphicImagesTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Images"
   end
 
-  test "creating a Image" do
+  test "creating a Attachment" do
     visit user_images_url(@user)
-    click_on "New Image"
+    click_on "New Attachment"
 
-    fill_in "Name", with: @image.name
+    fill_in "Name", with: @attachment.name
     click_on "Save"
 
-    assert_text "Image was successfully created"
+    assert_text "Attachment was successfully created"
     click_on "Back"
   end
 
-  test "updating a Image" do
+  test "updating a Attachment" do
     visit user_images_url(@user)
     click_on "Edit", match: :first
 
-    fill_in "Name", with: @image.name
+    fill_in "Name", with: @attachment.name
     click_on "Save"
 
-    assert_text "Image was successfully updated"
+    assert_text "Attachment was successfully updated"
     click_on "Back"
   end
 
-  test "destroying a Image" do
+  test "destroying a Attachment" do
     visit user_images_url(@user)
 
     click_on "Destroy", match: :first
 
-    assert_text "Image was successfully destroyed"
+    assert_text "Attachment was successfully destroyed"
   end
 end

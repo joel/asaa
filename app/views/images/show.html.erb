@@ -2,18 +2,18 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @image.name %>
+  <%= @attachment.name %>
 </p>
 
-<% if @image.attachment.attached? %>
-  <% if @image.attachment.representable? %>
-    <%= image_tag url_for(@image.attachment.representation(resize: "200x200").processed) %>
+<% if @attachment.attachment.attached? %>
+  <% if @attachment.attachment.representable? %>
+    <%= image_tag url_for(@attachment.attachment.representation(resize: "200x200").processed) %>
   <% else %>
-    <%= image_tag url_for(@image.attachment), class: "variant-1" %>
+    <%= image_tag url_for(@attachment.attachment), class: "variant-1" %>
   <% end %>
 <% else %>
   No Attachment
 <% end %>
 
-<%= link_to 'Edit', nested_helper_url(resource_name: "images", action: :edit, behaveable: @behaveable, resource: @image) %> |
+<%= link_to 'Edit', nested_helper_url(resource_name: "images", action: :edit, behaveable: @behaveable, resource: @attachment) %> |
 <%= link_to 'Back', nested_helper_url(resource_name: "images", behaveable: @behaveable) %>

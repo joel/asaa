@@ -5,17 +5,17 @@ require "test_helper"
 class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
-    @image = create(:image)
-    @user.images << @image
+    @attachment = create(:attachment)
+    @user.images << @attachment
   end
 
   describe "#index" do
-    context "with an image" do
+    context "with an attachment" do
       context "html" do
         it "should get index" do
           get user_images_url(user_id: @user.id)
           assert_response :success
-          assert_match @image.name, @response.body
+          assert_match @attachment.name, @response.body
         end
       end
 
@@ -24,7 +24,7 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
           get user_images_url(user_id: @user.id, format: :json)
           assert_response :success
           assert_match %r{^http://www.example.com/users/(\d+)/images}, @response.location
-          assert_match @image.name, JSON.parse(@response.body)[0]["name"]
+          assert_match @attachment.name, JSON.parse(@response.body)[0]["name"]
         end
       end
     end
@@ -36,34 +36,34 @@ class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
     assert_match %r{^http://www.example.com/users/(\d+)/images/new}, @request.url
   end
 
-  test "should create image" do
+  test "should create attachment" do
     assert_difference -> { @user.images.count } => +1 do
-      post user_images_url(user_id: @user.id), params: { image: { name: @image.name } }
+      post user_images_url(user_id: @user.id), params: { attachment: { name: @attachment.name } }
     end
 
-    assert_redirected_to user_image_url(user_id: @user.id, id: Image.last.id)
+    assert_redirected_to user_image_url(user_id: @user.id, id: Attachment.last.id)
   end
 
-  test "should show image" do
-    get user_image_url(@user, @image)
+  test "should show attachment" do
+    get user_image_url(@user, @attachment)
     assert_response :success
     assert_match %r{^http://www.example.com/users/(\d+)/images/(\d+)}, @response.location
   end
 
   test "should get edit" do
-    get edit_user_image_url(@user, @image)
+    get edit_user_image_url(@user, @attachment)
     assert_response :success
     assert_match %r{^http://www.example.com/users/(\d+)/images/(\d+)/edit}, @response.location
   end
 
-  test "should update image" do
-    patch user_image_url(@user, @image), params: { image: { name: @image.name } }
-    assert_redirected_to user_image_url(@user, @image)
+  test "should update attachment" do
+    patch user_image_url(@user, @attachment), params: { attachment: { name: @attachment.name } }
+    assert_redirected_to user_image_url(@user, @attachment)
   end
 
-  test "should destroy image" do
+  test "should destroy attachment" do
     assert_difference -> { @user.images.count } => -1 do
-      delete user_image_url(@user, @image)
+      delete user_image_url(@user, @attachment)
     end
 
     assert_redirected_to user_images_url(@user)

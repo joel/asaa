@@ -12,19 +12,19 @@
   </thead>
 
   <tbody>
-    <% @images.each do |image| %>
+    <% @images.each do |attachment| %>
       <tr>
         <td>
-          <% if image.attachment.attached? %>
-            <%= image_tag url_for(image.attachment.variant(resize: "50x50").processed) %>
+          <% if attachment.attachment.attached? %>
+            <%= image_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
           <% else %>
             No Attachment
           <% end %>
         </td>
-        <td><%= image.name %></td>
-        <td><%= link_to 'Show', image %></td>
-        <td><%= link_to 'Edit', edit_image_path(image) %></td>
-        <td><%= link_to 'Destroy', image, method: :delete %></td>
+        <td><%= attachment.name %></td>
+        <td><%= link_to 'Show', attachment %></td>
+        <td><%= link_to 'Edit', edit_image_path(attachment) %></td>
+        <td><%= link_to 'Destroy', attachment, method: :delete %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Image', new_image_path %>
+<%= link_to 'New Attachment', new_image_path %>

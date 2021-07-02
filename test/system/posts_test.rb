@@ -7,14 +7,14 @@ class PostsTest < ApplicationSystemTestCase
     @post = create(:post)
   end
 
-  test "add image" do
+  test "add attachment" do
     visit posts_url
     click_on "Edit", match: :first
 
     fill_in "Name", with: @post.name
     attach_file "post_header_picture", Rails.root.join("test/fixtures/yoda.jpeg")
     visit post_url(@post)
-    # page.find_by_id("image-#{@post.id}", wait: 3).visible?
+    # page.find_by_id("attachment-#{@post.id}", wait: 3).visible?
   end
 
   test "visiting the index" do
