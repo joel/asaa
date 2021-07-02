@@ -2,7 +2,7 @@
 
 require "application_system_test_case"
 
-class ImagesTest < ApplicationSystemTestCase
+class AttachmentsTest < ApplicationSystemTestCase
   setup do
     @attachment = create(:attachment)
   end

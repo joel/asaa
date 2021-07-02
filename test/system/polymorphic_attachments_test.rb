@@ -2,7 +2,7 @@
 
 require "application_system_test_case"
 
-class PolymorphicImagesTest < ApplicationSystemTestCase
+class PolymorphicAttachmentsTest < ApplicationSystemTestCase
   setup do
     @user = create(:user)
     @attachment = create(:attachment)

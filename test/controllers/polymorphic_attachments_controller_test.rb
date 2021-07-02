@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class PolymorphicImagesControllerTest < ActionDispatch::IntegrationTest
+class PolymorphicAttachmentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     @attachment = create(:attachment)

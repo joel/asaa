@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ImagesHelper
+module AttachmentsHelper
   class RouteHelperError < StandardError; end
 
   def nested_helper_url(resource_name:, action: nil, behaveable: nil, resource: nil)

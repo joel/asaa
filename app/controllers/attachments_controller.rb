@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ImagesController < ApplicationController
+class AttachmentsController < ApplicationController
   include Behaveable::ResourceFinder
   include Behaveable::RouteExtractor
 
@@ -115,7 +115,7 @@ class ImagesController < ApplicationController
   # Get Attachment context object.
   #
   # ==== Returns
-  # * <tt>ActiveRecord</tt> - Imageable's attachments or Attachment.
+  # * <tt>ActiveRecord</tt> - Attachmentable's attachments or Attachment.
   def imageable
     @behaveable ||= behaveable
     @behaveable ? @behaveable.attachments : Attachment

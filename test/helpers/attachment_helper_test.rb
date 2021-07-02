@@ -2,8 +2,8 @@
 
 require "test_helper"
 
-class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metrics/ClassLength
-  include ImagesHelper
+class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metrics/ClassLength
+  include AttachmentsHelper
 
   describe "#nested_helper_url" do
     context "without resource" do
@@ -98,7 +98,7 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
       end
 
       test "should raise an error as edit route need a resource" do
-        assert_raises(ImagesHelper::RouteHelperError) do
+        assert_raises(AttachmentsHelper::RouteHelperError) do
           send(:location_url, resource_name: "attachments", action: "edit")
         end
       end
@@ -107,13 +107,13 @@ class ImagesHelperTest < ActionDispatch::IntegrationTest # rubocop:disable Metri
         resource = stub
         mock(resource).id { 42 } # persited resource
 
-        assert_raises(ImagesHelper::RouteHelperError) do
+        assert_raises(AttachmentsHelper::RouteHelperError) do
           send(:location_url, resource_name: "attachments", action: "new", resource: resource)
         end
       end
 
       test "should raise an error as new route need a resource" do
-        assert_raises(ImagesHelper::RouteHelperError) do
+        assert_raises(AttachmentsHelper::RouteHelperError) do
           send(:location_url, resource_name: "attachments", action: "new")
         end
       end

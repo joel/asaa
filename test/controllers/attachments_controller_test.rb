@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class ImagesControllerTest < ActionDispatch::IntegrationTest
+class AttachmentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @attachment = create(:attachment)
   end
