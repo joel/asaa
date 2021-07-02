@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+./bin/services-status
+
+./bin/docker-command test "bin/rails test"

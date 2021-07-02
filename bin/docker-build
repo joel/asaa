@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+if [ $# -eq 0 ]
+  then
+    echo "Building dev image"
+    echo "You can start either test,prod,dev or ci"
+    echo "e.g bin/docker-build dev"
+    echo "e.g bin/docker-build prod"
+    echo "..."
+fi
+
+PF_TARGET="${1:-dev}"
+
+echo "PF_TARGET: [${PF_TARGET}]"
+
+POSSIBLE_VALUES=("prod" "dev" "test" "ci")
+
+if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
+  echo "target should be either: test,prod,dev or ci"
+  exit 1
+fi
+
+docker build \
+    --tag ${SERVICE_NAME}/${PF_TARGET}:latest \
+    --build-arg ARG_RUBY_VERSION=${ARG_RUBY_VERSION} \
+    --build-arg ARG_BUNDLER_VERSION=${ARG_BUNDLER_VERSION} \
+    --build-arg ARG_APP_PATH=${ARG_APP_PATH} \
+    --build-arg ARG_RUBYGEMS_VERSION=${ARG_RUBYGEMS_VERSION} \
+    . -f dockerfiles/Dockerfile.${PF_TARGET}

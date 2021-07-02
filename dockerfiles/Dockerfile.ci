@@ -1,0 +1,50 @@
+ARG ARG_RUBY_VERSION
+
+# "Debian GNU/Linux 10 (buster)"
+FROM ruby:${ARG_RUBY_VERSION}
+
+ARG ARG_BUNDLER_VERSION
+ARG ARG_APP_PATH
+ARG ARG_RUBYGEMS_VERSION
+ARG ARG_COMPOSE_WAIT_VER=2.9.0
+
+RUN apt-get update -qq && \
+    apt-get install -y build-essential \
+    libpq-dev \
+    nodejs \
+    curl \
+    imagemagick \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf \
+    /var/lib/apt \
+    /var/lib/dpkg \
+    /var/lib/cache \
+    /var/lib/log
+
+ENV BUNDLE_PATH /bundle
+ENV GEM_HOME /bundle
+ENV BUNDLE_JOBS 20
+ENV BUNDLE_RETRY 5
+ENV BUNDLE_WITHOUT production development
+ENV BUNDLE_CACHE_ALL true
+ENV BUNDLER_VERSION ${ARG_BUNDLER_VERSION}
+ENV RUBYGEMS_VERSION ${ARG_RUBYGEMS_VERSION}
+
+ENV APP_PATH ${ARG_APP_PATH}
+
+WORKDIR ${APP_PATH}
+
+ADD . ${APP_PATH}
+
+RUN gem update --system ${RUBYGEMS_VERSION}
+
+RUN gem install bundler:${BUNDLER_VERSION}
+
+RUN bundle install
+
+ENV RAILS_ENV test
+ENV RACK_ENV test
+
+RUN curl -SL https://github.com/ufoscout/docker-compose-wait/releases/download/${ARG_COMPOSE_WAIT_VER}/wait -o /wait
+RUN chmod +x /wait

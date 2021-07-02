@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+./bin/docker-check
+if [[ $? = 1 ]]; then
+  exit 1
+fi
+
+if [ $# -eq 0 ]
+  then
+    echo "Opening dev server console"
+    echo "You can start either production or development"
+    echo "e.g bin/server-comsole dev"
+    echo "e.g bin/server-comsole prod"
+fi
+
+PF_TARGET="${1:-dev}"
+
+POSSIBLE_VALUES=("prod" "dev")
+
+if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
+  echo "target should be either: prod or dev"
+  exit 1
+fi
+
+./bin/services-start "$@"
+
+docker container ls | grep ${SERVICE_NAME}-${PF_TARGET}-app 1> /dev/null
+if [[ $? = 1 ]]; then
+  echo "Starting container for [${PF_TARGET}]..."
+  ./bin/docker-command ${PF_TARGET} "bin/rails console"
+else
+  echo "Connecting to container for [${PF_TARGET}]...."
+  docker exec -it ${SERVICE_NAME}-${PF_TARGET}-app bash -c 'bin/rails console'
+fi

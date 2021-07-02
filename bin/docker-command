@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+if [ $# -lt 2 ]
+  then
+    echo "need to provide the target platform and command"
+    echo "e.g: ./docker_command test bundle exec rake"
+    exit 1
+fi
+
+function args_to_array() {
+  string="$@"
+  array=()
+  while read -rd ' ' || [[ -n "${REPLY}" ]]; do
+    strip_entry=$(echo "${REPLY}" | sed -E 's/[[:space:]]+//g')
+    array+=(${strip_entry})
+  done <<<"${string}"
+}
+
+function destructuring!() {
+  target="${array[0]}"
+  params=("${array[@]:1}") # removes the first element
+  CMD=""
+  for i in ${params[@]}; do
+    CMD+="${i} "
+  done
+  CMD=${CMD%?} # remove trailing space
+}
+
+args_to_array "$@"
+destructuring!
+
+echo "target: [${target}]"
+echo "command: [${CMD}]"
+
+PF_TARGET="${target}"
+
+POSSIBLE_VALUES=("test" "dev" "prod")
+
+if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
+  echo "target should be either: prod,dev or test"
+  exit 1
+fi
+
+./bin/services-status
+
+case "${PF_TARGET}" in
+  'test')
+    FULL_SERVICE_ENV='test'
+    SERVICE_ENV='test'
+  ;;
+  'dev')
+    FULL_SERVICE_ENV='development'
+    SERVICE_ENV='dev'
+  ;;
+  'prod')
+    FULL_SERVICE_ENV='production'
+    SERVICE_ENV='prod'
+  ;;
+esac
+
+docker run --rm \
+  --env REDIS_URL=redis://${SERVICE_NAME}-redis:6379/1 \
+  --env DB_POOL=${DB_POOL} \
+  --env DB_USER=${DB_USER} \
+  --env DB_PASSWORD=${DB_PASSWORD} \
+  --env DB_HOST=${SERVICE_NAME}-db \
+  --env DB_PORT=3306 \
+  --env RAILS_LOG_TO_STDOUT=${RAILS_LOG_TO_STDOUT} \
+  --env LOG_LEVEL=${LOG_LEVEL} \
+  --env LOG_APPENDER=${LOG_APPENDER} \
+  --network ${SERVICE_NAME}-bridge-docker-network \
+  --mount type=bind,source=$PWD,target=${ARG_APP_PATH} \
+  ${SERVICE_NAME}/${SERVICE_ENV}:latest sh -c "RAILS_ENV=${FULL_SERVICE_ENV} ${CMD}"

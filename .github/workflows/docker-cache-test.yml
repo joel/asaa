@@ -1,0 +1,203 @@
+name: Docker Cached Image Test CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  APP_IMAGE_TAG: iwl-development:0.1.0
+  APP_IMAGE_CACHE_TAG: iwl-development-cache
+  IMAGE_CACHE_DIR: /tmp/cache/docker-image
+  IMAGE_CACHE_KEY: cache-image
+  DB_PASSWORD: db_password
+  DB_USER: root
+  DB_HOST: db
+  DB_PORT: 3306
+  DB_FORWARDED_PORT: 3306
+  REDIS_HOST: redis
+  REDIS_FORWARDED_PORT: 6379
+  ARG_RUBY_VERSION: 2.7.3
+  ARG_BUNDLER_VERSION: 2.2.20
+  ARG_APP_PATH: /src
+  ARG_RUBYGEMS_VERSION: 3.2.20
+  REDIS_URL: redis://redis:6379/1
+  BUNDLE_PATH: /bundle
+  GEM_HOME: /bundle
+
+jobs:
+  image-cache-or-build:
+    strategy:
+      matrix:
+        ruby: ["2.7.3"]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Cache docker image
+      id: cache-docker-image
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.IMAGE_CACHE_DIR }}
+        key: ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-${{ hashFiles('Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-
+
+    - name: Docker Container List
+      run: |
+        docker container ls
+
+    - name: Docker build
+      run: |
+        docker-compose build \
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
+          --build-arg ARG_RUBY_VERSION=${{ matrix.ruby }} \
+          --build-arg ARG_BUNDLER_VERSION=${{ env.ARG_BUNDLER_VERSION }} \
+          --build-arg ARG_APP_PATH=${{ env.ARG_APP_PATH }} \
+          --build-arg ARG_RUBYGEMS_VERSION=${{ env.ARG_RUBYGEMS_VERSION }} \
+        base
+
+    - name: Docker Container List
+      run: |
+        docker container ls
+
+    - name: Docker tag and save
+      if: steps.cache-docker-image.outputs.cache-hit != 'true'
+      run: mkdir -p ${{ env.IMAGE_CACHE_DIR }}
+        && docker image tag ${{ env.APP_IMAGE_TAG }} ${{ env.APP_IMAGE_CACHE_TAG }}
+        && docker image save -o ${{ env.IMAGE_CACHE_DIR }}/image.tar ${{ env.APP_IMAGE_CACHE_TAG }}
+
+  test-app:
+    needs: image-cache-or-build
+    strategy:
+      matrix:
+        ruby: ["2.7.3"]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Cache docker image
+      id: cache-docker-image
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.IMAGE_CACHE_DIR }}
+        key: ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-${{ hashFiles('Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-
+
+    - name: Docker Container List
+      run: |
+        docker container ls
+
+    - name: Docker load
+      if: steps.cache-docker-image.outputs.cache-hit == 'true'
+      run: docker image load -i ${{ env.IMAGE_CACHE_DIR }}/image.tar
+
+    - name: Docker Container List
+      run: |
+        docker container ls
+
+    - name: Wait middleware services
+      run: docker-compose run --rm wait-middleware
+
+    - name: Setup the database
+      run: |
+        docker-compose run --rm \
+          -e DB_HOST=${{ env.DB_HOST }} \
+          -e DB_PORT=${{ env.DB_PORT }} \
+          -e REDIS_URL=redis://${{ env.REDIS_HOST }}:${{ env.REDIS_PORT }}/1 \
+          -e DB_USER=${{ env.DB_USER }} \
+          -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
+          console bash -c "bin/rails db:create db:migrate"
+
+    - name: Run test
+      run: |
+        docker-compose run --rm \
+          -e DB_HOST=${{ env.DB_HOST }} \
+          -e DB_PORT=${{ env.DB_PORT }} \
+          -e REDIS_URL=redis://${{ env.REDIS_HOST }}:${{ env.REDIS_PORT }}/1 \
+          -e DB_USER=${{ env.DB_USER }} \
+          -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
+          console bash -c "bin/rails test"
+
+  scan-image-by-trivy:
+    needs: image-cache-or-build
+    strategy:
+      matrix:
+        ruby: ["2.7.3"]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    env:
+      TRIVY_CACHE_DIR: /tmp/cache/trivy
+
+    steps:
+    - name: Cache docker image
+      id: cache-docker-image
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.IMAGE_CACHE_DIR }}
+        key: ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-${{ hashFiles('Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-
+
+    - name: Docker load
+      if: steps.cache-docker-image.outputs.cache-hit == 'true'
+      run: docker image load -i ${{ env.IMAGE_CACHE_DIR }}/image.tar
+
+    - name: Scan image
+      run: docker container run
+        --rm
+        -v /var/run/docker.sock:/var/run/docker.sock
+        -v ${{ env.TRIVY_CACHE_DIR }}:/root/.cache/
+        aquasec/trivy
+        ${{ env.APP_IMAGE_CACHE_TAG }}
+
+  lint-app:
+    needs: image-cache-or-build
+    strategy:
+      matrix:
+        ruby: ["2.7.3"]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Cache docker image
+      id: cache-docker-image
+      uses: actions/cache@v1
+      with:
+        path: ${{ env.IMAGE_CACHE_DIR }}
+        key: ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-${{ hashFiles('Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.IMAGE_CACHE_KEY }}-${{ matrix.ruby }}-
+
+    - name: Docker load
+      if: steps.cache-docker-image.outputs.cache-hit == 'true'
+      run: docker image load -i ${{ env.IMAGE_CACHE_DIR }}/image.tar
+
+    - name: Wait middleware services
+      run: docker-compose run --rm wait-middleware
+
+    - name: Lint code
+      id: lint-code
+      run: |
+        docker-compose run --rm \
+          -e DB_HOST=${{ env.DB_HOST }} \
+          -e DB_PORT=${{ env.DB_PORT }} \
+          -e REDIS_URL=redis://${{ env.REDIS_HOST }}:${{ env.REDIS_PORT }}/1 \
+          -e DB_USER=${{ env.DB_USER }} \
+          -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
+          console bash -c "bin/bundle exec rubocop --parallel"

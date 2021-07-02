@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+if [ $# -eq 0 ]
+  then
+    echo "Stopping dev server"
+    echo "You can start either production or development"
+    echo "e.g bin/server-stop dev"
+    echo "e.g bin/server-stop prod"
+fi
+
+PF_TARGET="${1:-dev}"
+
+POSSIBLE_VALUES=("prod" "dev")
+
+if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
+  echo "target should be either: prod or dev"
+  exit 1
+fi
+
+docker container ls | grep ${SERVICE_NAME}-${PF_TARGET}-app 1> /dev/null
+if [[ $? = 1 ]]; then
+  echo "Server [${PF_TARGET}] Stop!"
+else
+  echo "Stopping Server [${PF_TARGET}]..."
+  docker container stop ${SERVICE_NAME}-${PF_TARGET}-app
+fi
+
+docker container ls | grep ${SERVICE_NAME}-${PF_TARGET}-sidekiq 1> /dev/null
+if [[ $? = 0 ]]; then
+  ./bin/sidekiq-stop ${PF_TARGET}
+fi
