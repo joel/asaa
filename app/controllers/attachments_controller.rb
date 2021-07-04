@@ -55,8 +55,8 @@ class AttachmentsController < ApplicationController
         if @attachment.save
           attachable << @attachment if @behaveable
 
-          @attachment.attachment.attach(params[:attachment][:attachment]) if params[:attachment][:attachment]
-          @attachment.attachment.analyze if @attachment.attachment.attached?
+          @attachment.asset.attach(params[:attachment][:asset]) if params[:attachment][:asset]
+          @attachment.asset.analyze if @attachment.asset.attached?
 
           format.html do
             redirect_to polymorphic_url([@behaveable, @attachment]), notice: "Attachment was successfully created."
@@ -130,7 +130,7 @@ class AttachmentsController < ApplicationController
   def attachment_params
     params.require(:attachment).permit(
       :name,
-      :attachment
+      :asset
     )
   end
 end

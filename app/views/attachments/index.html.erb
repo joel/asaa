@@ -15,8 +15,8 @@
     <% @attachments.each do |attachment| %>
       <tr>
         <td>
-          <% if attachment.attachment.attached? %>
-            <%= image_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
+          <% if attachment.asset.attached? %>
+            <%= image_tag url_for(attachment.asset.variant(resize: "50x50").processed) %>
           <% else %>
             No Attachment
           <% end %>

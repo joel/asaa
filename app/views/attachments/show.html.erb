@@ -5,11 +5,11 @@
   <%= @attachment.name %>
 </p>
 
-<% if @attachment.attachment.attached? %>
-  <% if @attachment.attachment.representable? %>
-    <%= image_tag url_for(@attachment.attachment.representation(resize: "200x200").processed) %>
+<% if @attachment.asset.attached? %>
+  <% if @attachment.asset.representable? %>
+    <%= image_tag url_for(@attachment.asset.representation(resize: "200x200").processed) %>
   <% else %>
-    <%= image_tag url_for(@attachment.attachment), class: "variant-1" %>
+    <%= image_tag url_for(@attachment.asset), class: "variant-1" %>
   <% end %>
 <% else %>
   No Attachment

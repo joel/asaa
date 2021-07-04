@@ -65,12 +65,12 @@ class AttachmentsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Attachment.count") do
       post attachments_url,
            params: { attachment: { name: @attachment.name,
-                              attachment: fixture_file_upload("test/fixtures/favicon.ico",
+                              asset: fixture_file_upload("test/fixtures/favicon.ico",
                                                               "attachment/vnd.microsoft.icon") } }
     end
 
     assert_redirected_to attachment_url(Attachment.last)
-    assert_equal "favicon.ico", Attachment.last.attachment.filename.to_s
+    assert_equal "favicon.ico", Attachment.last.asset.filename.to_s
   end
 
   test "should show attachment" do
