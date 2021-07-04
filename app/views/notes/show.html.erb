@@ -5,6 +5,26 @@
   <%= @note.name %>
 </p>
 
+<% if @note.attachments.present? %>
+  <% @note.attachments.each do |attachment| %>
+    <p>
+      <strong>Name:</strong>
+      <%= attachment.name %>
+    </p>
+    <% if attachment.asset.attached? %>
+      <% if attachment.asset.representable? %>
+        <%= image_tag(url_for(attachment.asset.representation(resize: "200x200").processed), id: "preview")%>
+      <% else %>
+        <%= image_tag url_for(attachment.asset), class: "variant-1" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  No Attachments
+<% end %>
+
+<br/>
+
 <%= link_to 'Edit', edit_note_path(@note) %> |
 <%= link_to 'Back', notes_path %> |
 <%= link_to 'Add Attachment', new_note_attachment_path(@note) %>

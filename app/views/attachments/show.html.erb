@@ -2,12 +2,12 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @attachment.name %>
+  <%= (@behaveable || @attachment).name %>
 </p>
 
 <% if @attachment.asset.attached? %>
   <% if @attachment.asset.representable? %>
-    <%= image_tag url_for(@attachment.asset.representation(resize: "200x200").processed) %>
+    <%= image_tag(url_for(@attachment.asset.representation(resize: "200x200").processed), id: "preview")%>
   <% else %>
     <%= image_tag url_for(@attachment.asset), class: "variant-1" %>
   <% end %>
@@ -15,5 +15,12 @@
   No Attachment
 <% end %>
 
+<br/>
+
 <%= link_to 'Edit', nested_helper_url(resource_name: "attachments", action: :edit, behaveable: @behaveable, resource: @attachment) %> |
-<%= link_to 'Back', nested_helper_url(resource_name: "attachments", behaveable: @behaveable) %>
+<%= link_to 'Back', nested_helper_url(resource_name: "attachments", behaveable: @behaveable) %> |
+
+<% if @behaveable %>
+  <%= link_to "Show #{@behaveable.class.name}", @behaveable %>
+<% end %>
+

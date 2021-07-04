@@ -74,9 +74,9 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
 
       ip = IPAddr.new(addrinfo.ip_address).mask(24)
 
-      Logger.new($stdout).info "Adding #{ip.inspect} to config.web_console.whitelisted_ips"
+      Logger.new($stdout).info "Adding #{ip.inspect} to config.web_console.whitelisted_ips" # rubocop:disable Naming/InclusiveLanguage
 
-      config.web_console.whitelisted_ips << ip
+      config.web_console.whitelisted_ips << ip # rubocop:disable Naming/InclusiveLanguage
     end
   end
 end

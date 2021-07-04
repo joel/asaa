@@ -77,11 +77,8 @@ class AttachmentsController < ApplicationController
     end
   end
 
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
-
   # PATCH/PUT /attachments/1 or /attachments/1.json
-  def update # rubocop:disable Metrics/MethodLength
+  def update
     respond_to do |format|
       if @attachment.update(attachment_params)
         format.html do
@@ -100,6 +97,9 @@ class AttachmentsController < ApplicationController
       end
     end
   end
+
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   # DELETE /attachments/1 or /attachments/1.json
   def destroy
