@@ -11,10 +11,10 @@ Rails.application.routes.draw do
 
   get "welcome/index"
 
-  concern :imageable do
+  concern :attachable do
     resources :attachments
   end
   resources :attachments
-  resources :users, concerns: :imageable
+  resources :users, concerns: :attachable
   resources :posts
 end

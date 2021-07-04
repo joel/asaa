@@ -8,7 +8,7 @@ class AttachmentsController < ApplicationController
 
   # GET /attachments or /attachments.json
   def index
-    @attachments = imageable.all
+    @attachments = attachable.all
 
     respond_to do |format|
       format.html { render :index, status: :ok, location: extract(behaveable: @behaveable) }
@@ -26,7 +26,7 @@ class AttachmentsController < ApplicationController
 
   # GET /attachments/new
   def new
-    @attachment = imageable.new
+    @attachment = attachable.new
     respond_to do |format|
       format.html { render :new, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
       format.json { render json: @attachment, status: :ok, location: polymorphic_url([@behaveable, @attachment]) }
@@ -48,12 +48,12 @@ class AttachmentsController < ApplicationController
 
   # POST /attachments or /attachments.json
   def create
-    @attachment = imageable.new(image_params)
+    @attachment = attachable.new(image_params)
 
     respond_to do |format|
       @attachment.transaction do
         if @attachment.save
-          imageable << @attachment if @behaveable
+          attachable << @attachment if @behaveable
 
           @attachment.attachment.attach(params[:attachment][:attachment]) if params[:attachment][:attachment]
           @attachment.attachment.analyze if @attachment.attachment.attached?
@@ -116,14 +116,14 @@ class AttachmentsController < ApplicationController
   #
   # ==== Returns
   # * <tt>ActiveRecord</tt> - Attachmentable's attachments or Attachment.
-  def imageable
+  def attachable
     @behaveable ||= behaveable
     @behaveable ? @behaveable.attachments : Attachment
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image
-    @attachment = imageable.find(params[:id])
+    @attachment = attachable.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

@@ -33,14 +33,14 @@ ActiveRecord::Schema.define(version: 2021_06_18_104731) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "imageations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "extensions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "image_id"
-    t.string "imageable_type"
-    t.bigint "imageable_id"
+    t.string "attachable_type"
+    t.bigint "attachable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["image_id"], name: "index_imageations_on_image_id"
-    t.index ["imageable_type", "imageable_id"], name: "index_imageations_on_imageable_type_and_imageable_id"
+    t.index ["image_id"], name: "index_extensions_on_image_id"
+    t.index ["attachable_type", "attachable_id"], name: "index_extensions_on_attachable_type_and_attachable_id"
   end
 
   create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
