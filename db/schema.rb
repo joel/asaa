@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_18_104731) do
+ActiveRecord::Schema.define(version: 2021_07_04_140336) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -33,17 +33,23 @@ ActiveRecord::Schema.define(version: 2021_06_18_104731) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "extensions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "attachment_id"
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attachment_id"], name: "index_extensions_on_attachment_id"
     t.index ["attachable_type", "attachable_id"], name: "index_extensions_on_attachable_type_and_attachable_id"
+    t.index ["attachment_id"], name: "index_extensions_on_attachment_id"
   end
 
-  create_table "attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "notes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

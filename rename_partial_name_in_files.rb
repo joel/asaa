@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 from = ARGV[0]
 to = ARGV[1]
 
 exit(1) if from.nil? || to.nil?
 
-require 'fileutils'
+require "fileutils"
 
 Dir["./**/*.{rb,scss,js,erb}"].each do |file_path|
-  next unless file_path =~ /#{from}/
+  next unless /#{from}/.match?(file_path)
 
   puts file_path.gsub(/#{from}/, to)
 

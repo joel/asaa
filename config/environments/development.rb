@@ -66,11 +66,11 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
 
   # When inside a docker container
   if File.file?("/.dockerenv")
-    # Whitelist docker ip for web console
+    # allowlist  docker ip for web console
     # Cannot render console from 172.27.0.1! Allowed networks: 127.0.0.1
     Socket.ip_address_list.each do |addrinfo|
       next unless addrinfo.ipv4?
-      next if addrinfo.ip_address == "127.0.0.1" # Already whitelisted
+      next if addrinfo.ip_address == "127.0.0.1" # Already allowlisted
 
       ip = IPAddr.new(addrinfo.ip_address).mask(24)
 

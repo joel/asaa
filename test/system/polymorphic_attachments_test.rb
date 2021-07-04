@@ -15,7 +15,7 @@ class PolymorphicAttachmentsTest < ApplicationSystemTestCase
 
     click_on "Add Attachment", match: :first
     fill_in "Name", with: @attachment.name
-    attach_file "attachment_attachment", Rails.root.join("test/fixtures/favicon.ico")
+    attach_file "attachment_asset", Rails.root.join("test/fixtures/favicon.ico")
   end
 
   test "visiting the index" do

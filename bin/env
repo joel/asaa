@@ -4,6 +4,10 @@ begin
   require 'dotenv/load'
   require 'dotenv'
   Dotenv.load('.env.local')
+
+  ENV.each do |k,v|
+    puts("#{k} => #{v}")
+  end
 rescue LoadError
   puts("No Dotenv")
 end

@@ -129,14 +129,16 @@ class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable 
       test "should return root edit attachment url" do
         resource = stub
 
-        assert_equal "edit_attachment_url", send(:location_url, resource_name: "attachments", resource: resource, action: "edit")
+        assert_equal "edit_attachment_url",
+                     send(:location_url, resource_name: "attachments", resource: resource, action: "edit")
       end
 
       test "should return root new attachment url" do
         resource = stub
         mock(resource).id { nil }
 
-        assert_equal "new_attachment_url", send(:location_url, resource_name: "attachments", resource: resource, action: "new")
+        assert_equal "new_attachment_url",
+                     send(:location_url, resource_name: "attachments", resource: resource, action: "new")
       end
 
       test "should return nested attachment url" do
