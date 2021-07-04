@@ -5,7 +5,6 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  resources :notes
   mount Sidekiq::Web => "/sidekiq"
 
   root to: "welcome#index"
@@ -17,5 +16,6 @@ Rails.application.routes.draw do
   end
   resources :attachments
   resources :users, concerns: :attachable
+  resources :notes, concerns: :attachable
   resources :posts
 end
