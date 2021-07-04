@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AttachmentsController < ApplicationController
+class AttachmentsController < ApplicationController # rubocop:disable Metrics/ClassLength
   include Behaveable::ResourceFinder
   include Behaveable::RouteExtractor
 
@@ -102,10 +102,16 @@ class AttachmentsController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   # DELETE /attachments/1 or /attachments/1.json
-  def destroy
+  def destroy # rubocop:disable Metrics/MethodLength
     @attachment.destroy
     respond_to do |format|
-      format.html { redirect_to extract(behaveable: @behaveable), notice: "Attachment was successfully destroyed." }
+      format.html do
+        if @behaveable
+          redirect_to @behaveable, notice: "Attachment was successfully destroyed."
+        else
+          redirect_to attachments_path, notice: "Attachment was successfully destroyed."
+        end
+      end
       format.json { head :no_content, location: extract(behaveable: @behaveable) }
     end
   end

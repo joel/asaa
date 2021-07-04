@@ -40,5 +40,6 @@ class AttachmentsTest < ApplicationSystemTestCase
     click_on "Destroy", match: :first
 
     assert_text "Attachment was successfully destroyed"
+    assert_equal "/attachments", URI.parse(current_url).path
   end
 end

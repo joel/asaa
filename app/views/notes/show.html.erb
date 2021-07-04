@@ -17,6 +17,10 @@
       <% else %>
         <%= image_tag url_for(attachment.asset), class: "variant-1" %>
       <% end %>
+
+      <br/>
+
+      <%= link_to 'Remove the asset', polymorphic_url([@note, attachment]), method: :delete, data: { confirm: 'Are you sure?' } %></td>
     <% end %>
   <% end %>
 <% else %>

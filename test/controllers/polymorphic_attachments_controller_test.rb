@@ -66,6 +66,6 @@ class PolymorphicAttachmentsControllerTest < ActionDispatch::IntegrationTest
       delete user_attachment_url(@user, @attachment)
     end
 
-    assert_redirected_to user_attachments_url(@user)
+    assert_redirected_to user_url(@user)
   end
 end

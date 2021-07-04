@@ -9,7 +9,7 @@ class NotesPolymorphicAttachmentsTest < ApplicationSystemTestCase
     @note.attachments << @attachment
   end
 
-  test "add asset" do
+  test "add and remove asset" do
     visit notes_url
     assert_selector "h1", text: "Notes"
     click_on "Add Attachment", match: :first
@@ -18,7 +18,6 @@ class NotesPolymorphicAttachmentsTest < ApplicationSystemTestCase
     fill_in "Name", with: @attachment.name
     click_on "Save Attachment"
     find("#preview").visible?
-    Note.last.destroy
   end
 
   test "show page back url" do
@@ -60,23 +59,28 @@ class NotesPolymorphicAttachmentsTest < ApplicationSystemTestCase
     assert_equal "/notes/#{note.id}", URI.parse(current_url).path
   end
 
-  # click_on "Add Attachment", match: :first
-
   # test "visiting the index" do
   #   visit note_attachments_url(note_id: @note)
   #   assert_selector "h1", text: "Attachments"
   # end
 
-  # test "creating a Attachment" do
-  #   visit note_attachments_url(@note)
-  #   click_on "New Attachment"
-
-  #   fill_in "Name", with: @attachment.name
-  #   click_on "Save"
-
-  #   assert_text "Attachment was successfully created"
-  #   click_on "Back"
-  # end
+  test "creating a Attachment" do
+    visit notes_url
+    click_on "New Note"
+    assert_selector "h1", text: "New Note"
+    click_on "Create"
+    assert_equal "/notes/#{Note.last.id}", URI.parse(current_url).path
+    click_on "Add Attachment"
+    assert_equal "/notes/#{Note.last.id}/attachments/new", URI.parse(current_url).path
+    attach_file "attachment_asset", Rails.root.join("test/fixtures/yoda.jpeg")
+    fill_in "Name", with: FFaker::Name.name
+    click_on "Save Attachment"
+    assert_text "Attachment was successfully created."
+    find("#preview").visible?
+    assert_equal "/notes/#{Note.last.id}/attachments/#{Attachment.last.id}", URI.parse(current_url).path
+    click_on "Show Note"
+    assert_equal "/notes/#{Note.last.id}", URI.parse(current_url).path
+  end
 
   # test "updating a Attachment" do
   #   visit note_attachments_url(@note)
@@ -89,11 +93,22 @@ class NotesPolymorphicAttachmentsTest < ApplicationSystemTestCase
   #   click_on "Back"
   # end
 
-  # test "destroying a Attachment" do
-  #   visit note_attachments_url(@note)
+  test "destroying a Attachment" do
+    @note.attachments.first.asset.attach(
+      io: File.open(Rails.root.join("test/fixtures/yoda.jpeg")),
+      filename: "yoda.jpeg",
+      content_type: "application/jpeg"
+    )
 
-  #   click_on "Destroy", match: :first
+    @note.reload
 
-  #   assert_text "Attachment was successfully destroyed"
-  # end
+    visit note_url(@note)
+
+    page.accept_confirm do
+      click_on "Remove the asset"
+    end
+
+    assert_text "Attachment was successfully destroyed"
+    assert_equal "/notes/#{@note.id}", URI.parse(current_url).path
+  end
 end
