@@ -2,5 +2,5 @@
 
 <%= render 'form', attachment: @attachment %>
 
-<%= link_to 'Show', @attachment %> |
-<%= link_to 'Back', attachments_path %>
+<%= link_to 'Show', nested_helper_url(resource_name: "attachments", action: :show, behaveable: @behaveable, resource: @attachment) %> |
+<%= link_to 'Back', nested_helper_url(resource_name: "attachments", action: :index, behaveable: @behaveable, resource: @attachment) %>

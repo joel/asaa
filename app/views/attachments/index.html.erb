@@ -16,14 +16,14 @@
       <tr>
         <td>
           <% if attachment.attachment.attached? %>
-            <%= attachment_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
+            <%= image_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
           <% else %>
             No Attachment
           <% end %>
         </td>
         <td><%= attachment.name %></td>
-        <td><%= link_to 'Show', attachment %></td>
-        <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
+        <td><%= link_to 'Show', nested_helper_url(resource_name: "attachments", action: :show, behaveable: @behaveable, resource: attachment) %></td>
+        <td><%= link_to 'Edit', nested_helper_url(resource_name: "attachments", action: :edit, behaveable: @behaveable, resource: attachment) %></td>
         <td><%= link_to 'Destroy', attachment, method: :delete %></td>
       </tr>
     <% end %>

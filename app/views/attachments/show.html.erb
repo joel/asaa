@@ -7,9 +7,9 @@
 
 <% if @attachment.attachment.attached? %>
   <% if @attachment.attachment.representable? %>
-    <%= attachment_tag url_for(@attachment.attachment.representation(resize: "200x200").processed) %>
+    <%= image_tag url_for(@attachment.attachment.representation(resize: "200x200").processed) %>
   <% else %>
-    <%= attachment_tag url_for(@attachment.attachment), class: "variant-1" %>
+    <%= image_tag url_for(@attachment.attachment), class: "variant-1" %>
   <% end %>
 <% else %>
   No Attachment
