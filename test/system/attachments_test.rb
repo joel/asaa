@@ -8,12 +8,12 @@ class AttachmentsTest < ApplicationSystemTestCase
   end
 
   test "visiting the index" do
-    visit images_url
+    visit attachments_url
     assert_selector "h1", text: "Attachments"
   end
 
   test "creating a Attachment" do
-    visit images_url
+    visit attachments_url
     click_on "New Attachment"
 
     fill_in "Name", with: @attachment.name
@@ -24,7 +24,7 @@ class AttachmentsTest < ApplicationSystemTestCase
   end
 
   test "updating a Attachment" do
-    visit images_url
+    visit attachments_url
     click_on "Edit", match: :first
 
     fill_in "Name", with: @attachment.name
@@ -35,7 +35,7 @@ class AttachmentsTest < ApplicationSystemTestCase
   end
 
   test "destroying a Attachment" do
-    visit images_url
+    visit attachments_url
 
     click_on "Destroy", match: :first
 

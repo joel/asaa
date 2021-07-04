@@ -16,14 +16,14 @@
       <tr>
         <td>
           <% if attachment.attachment.attached? %>
-            <%= image_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
+            <%= attachment_tag url_for(attachment.attachment.variant(resize: "50x50").processed) %>
           <% else %>
             No Attachment
           <% end %>
         </td>
         <td><%= attachment.name %></td>
         <td><%= link_to 'Show', attachment %></td>
-        <td><%= link_to 'Edit', edit_image_path(attachment) %></td>
+        <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
         <td><%= link_to 'Destroy', attachment, method: :delete %></td>
       </tr>
     <% end %>
@@ -32,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Attachment', new_image_path %>
+<%= link_to 'New Attachment', new_attachment_path %>

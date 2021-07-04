@@ -87,14 +87,14 @@ class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable 
   describe "#location_url" do # rubocop:disable Metrics/BlockLength
     context "without resource" do
       test "should return root attachments url" do
-        assert_equal "images_url", send(:location_url, resource_name: "attachments")
+        assert_equal "attachments_url", send(:location_url, resource_name: "attachments")
       end
 
       test "should return nested attachments url" do
         behaveable = stub
         stub(self).behaveable_name_from(behaveable) { "user" }
 
-        assert_equal "user_images_url", send(:location_url, resource_name: "attachments", behaveable: behaveable)
+        assert_equal "user_attachments_url", send(:location_url, resource_name: "attachments", behaveable: behaveable)
       end
 
       test "should raise an error as edit route need a resource" do
@@ -123,27 +123,27 @@ class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable 
       test "should return root attachment url" do
         resource = stub
 
-        assert_equal "image_url", send(:location_url, resource_name: "attachments", resource: resource)
+        assert_equal "attachment_url", send(:location_url, resource_name: "attachments", resource: resource)
       end
 
       test "should return root edit attachment url" do
         resource = stub
 
-        assert_equal "edit_image_url", send(:location_url, resource_name: "attachments", resource: resource, action: "edit")
+        assert_equal "edit_attachment_url", send(:location_url, resource_name: "attachments", resource: resource, action: "edit")
       end
 
       test "should return root new attachment url" do
         resource = stub
         mock(resource).id { nil }
 
-        assert_equal "new_image_url", send(:location_url, resource_name: "attachments", resource: resource, action: "new")
+        assert_equal "new_attachment_url", send(:location_url, resource_name: "attachments", resource: resource, action: "new")
       end
 
       test "should return nested attachment url" do
         behaveable = build(:user)
         resource = stub
 
-        assert_equal "user_image_url",
+        assert_equal "user_attachment_url",
                      send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource)
       end
 
@@ -151,7 +151,7 @@ class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable 
         behaveable = build(:user)
         resource = stub
 
-        assert_equal "edit_user_image_url",
+        assert_equal "edit_user_attachment_url",
                      send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource,
                                          action: "edit")
       end
@@ -161,7 +161,7 @@ class AttachmentsHelperTest < ActionDispatch::IntegrationTest # rubocop:disable 
         resource = stub
         mock(resource).id { nil }
 
-        assert_equal "new_user_image_url",
+        assert_equal "new_user_attachment_url",
                      send(:location_url, resource_name: "attachments", behaveable: behaveable, resource: resource,
                                          action: "new")
       end

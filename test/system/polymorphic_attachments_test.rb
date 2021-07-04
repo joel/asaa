@@ -15,16 +15,16 @@ class PolymorphicAttachmentsTest < ApplicationSystemTestCase
 
     click_on "Add Attachment", match: :first
     fill_in "Name", with: @attachment.name
-    attach_file "image_attachment", Rails.root.join("test/fixtures/favicon.ico")
+    attach_file "attachment_attachment", Rails.root.join("test/fixtures/favicon.ico")
   end
 
   test "visiting the index" do
-    visit user_images_url(user_id: @user)
+    visit user_attachments_url(user_id: @user)
     assert_selector "h1", text: "Attachments"
   end
 
   test "creating a Attachment" do
-    visit user_images_url(@user)
+    visit user_attachments_url(@user)
     click_on "New Attachment"
 
     fill_in "Name", with: @attachment.name
@@ -35,7 +35,7 @@ class PolymorphicAttachmentsTest < ApplicationSystemTestCase
   end
 
   test "updating a Attachment" do
-    visit user_images_url(@user)
+    visit user_attachments_url(@user)
     click_on "Edit", match: :first
 
     fill_in "Name", with: @attachment.name
@@ -46,7 +46,7 @@ class PolymorphicAttachmentsTest < ApplicationSystemTestCase
   end
 
   test "destroying a Attachment" do
-    visit user_images_url(@user)
+    visit user_attachments_url(@user)
 
     click_on "Destroy", match: :first
 

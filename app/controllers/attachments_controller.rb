@@ -4,7 +4,7 @@ class AttachmentsController < ApplicationController
   include Behaveable::ResourceFinder
   include Behaveable::RouteExtractor
 
-  before_action :set_image, only: %i[show edit update destroy]
+  before_action :set_attachment, only: %i[show edit update destroy]
 
   # GET /attachments or /attachments.json
   def index
@@ -48,7 +48,7 @@ class AttachmentsController < ApplicationController
 
   # POST /attachments or /attachments.json
   def create
-    @attachment = attachable.new(image_params)
+    @attachment = attachable.new(attachment_params)
 
     respond_to do |format|
       @attachment.transaction do
@@ -83,7 +83,7 @@ class AttachmentsController < ApplicationController
   # PATCH/PUT /attachments/1 or /attachments/1.json
   def update # rubocop:disable Metrics/MethodLength
     respond_to do |format|
-      if @attachment.update(image_params)
+      if @attachment.update(attachment_params)
         format.html do
           redirect_to polymorphic_url([@behaveable, @attachment]), notice: "Attachment was successfully updated."
         end
@@ -122,12 +122,12 @@ class AttachmentsController < ApplicationController
   end
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_image
+  def set_attachment
     @attachment = attachable.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
-  def image_params
+  def attachment_params
     params.require(:attachment).permit(
       :name,
       :attachment

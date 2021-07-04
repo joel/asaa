@@ -34,12 +34,12 @@ ActiveRecord::Schema.define(version: 2021_06_18_104731) do
   end
 
   create_table "extensions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "image_id"
+    t.bigint "attachment_id"
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["image_id"], name: "index_extensions_on_image_id"
+    t.index ["attachment_id"], name: "index_extensions_on_attachment_id"
     t.index ["attachable_type", "attachable_id"], name: "index_extensions_on_attachable_type_and_attachable_id"
   end
 
