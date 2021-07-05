@@ -44,6 +44,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
+        name: File List
+        run: |
+          ls -l
+      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
@@ -55,7 +59,7 @@ jobs:
             ARG_BUNDLER_VERSION=${{ env.ARG_BUNDLER_VERSION }}
             ARG_APP_PATH=${{ env.ARG_APP_PATH }}
             ARG_RUBYGEMS_VERSION=${{ env.ARG_RUBYGEMS_VERSION }}
-          context: ./dockerfiles/Dockerfile.ci
+          context: dockerfiles/Dockerfile.ci
           tags: ${{ env.APP_IMAGE_TAG }}
           outputs: type=docker,dest=/tmp/myimage.tar
       -
@@ -64,7 +68,6 @@ jobs:
         with:
           name: myimage
           path: /tmp/myimage.tar
-
       -
         name: Docker List
         run: |
