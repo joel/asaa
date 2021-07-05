@@ -13,6 +13,11 @@ services:
     volumes:
       - redis-data:/data
 
+  selenium:
+    image: selenium/standalone-chrome
+    volumes:
+     - /dev/shm:/dev/shm
+
   base: &base
     build:
       context: .
@@ -31,7 +36,7 @@ services:
   wait-middleware: &wait-middleware
     <<: *base
     environment:
-      WAIT_HOSTS: db:3306,redis:6379
+      WAIT_HOSTS: db:3306,redis:6379,selenium:4444
       WAIT_TIMEOUT: 90
       WAIT_HOST_CONNECT_TIMEOUT: 10
       WAIT_BEFORE: 5
@@ -40,6 +45,7 @@ services:
     depends_on:
       - db
       - redis
+      - selenium
     command: /wait
 
   backend: &backend
@@ -70,6 +76,21 @@ services:
       # Also expose the usual app port
       - "3000:3000"
 
+  chromedriver:
+    <<: *backend
+    environment:
+      SELENIUM_REMOTE_HOST: selenium
+    volumes:
+      - type: bind
+        source: .
+        target: ${ARG_APP_PATH}
+        consistency: cached
+    ports:
+      # Expose the test server port. Fail loudly if CAPYBARA_SERVER_PORT isn't set.
+      - ${CAPYBARA_SERVER_PORT}:4444
+      # Also expose the usual app port
+      - "3000:3000"
+    command: bin/rails server -p 3000 -b '0.0.0.0'
 
 volumes:
   db-data:
