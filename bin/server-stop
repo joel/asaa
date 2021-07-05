@@ -31,3 +31,5 @@ docker container ls | grep ${SERVICE_NAME}-${PF_TARGET}-sidekiq 1> /dev/null
 if [[ $? = 0 ]]; then
   ./bin/sidekiq-stop ${PF_TARGET}
 fi
+
+./bin/clean-env

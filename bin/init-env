@@ -13,6 +13,7 @@ export VERSION=0.1.0
 export REDIS_PUBLISHED_PORT=6666 # Need to be change as well in .env.local
 export PROD_SERVER_PUBLISHED_PORT=3010
 export DEV_SERVER_PUBLISHED_PORT=3005
+export REDIS_COMMANDER_PUBLISHED_PORT=8081
 
 # Database
 export DB_PUBLISHED_PORT=3333 # Need to be change as well in .env.local

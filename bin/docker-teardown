@@ -48,9 +48,4 @@ do
   fi
 done
 
-echo "Clean tmp dir" && \
-rm -rf tmp/* && \
-echo "Clean log dir" && \
-rm -rf log/* && \
-echo "Clean Local Storage" && \
-rm -rf storage/*
+./bin/clean-env

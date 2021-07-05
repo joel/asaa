@@ -38,15 +38,7 @@ fi
 
 ./bin/services-start
 
-# docker exec ${SERVICE_NAME}-${PF_TARGET}-app bash -c "bin/rails tmp:clear" && \
-# docker exec ${SERVICE_NAME}-${PF_TARGET}-app bash -c "bin/rails log:clear" && \
-
-echo "Clean tmp dir" && \
-rm -rf tmp/* && \
-echo "Clean log dir" && \
-rm -rf log/* && \
-echo "Redis Flush Cache" && \
-docker exec ${SERVICE_NAME}-redis bash -c "redis-cli -h 127.0.0.1 -p 6379 FLUSHALL" && \
+./bin/clean-env
 
 case "${PF_TARGET}" in
   'prod')

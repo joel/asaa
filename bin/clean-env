@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+# docker exec ${SERVICE_NAME}-${PF_TARGET}-app bash -c "bin/rails tmp:clear" && \
+# docker exec ${SERVICE_NAME}-${PF_TARGET}-app bash -c "bin/rails log:clear" && \
+
+if [[ -d tmp ]]; then
+  echo "Clean tmp dir" && \
+    rm -rf tmp/*
+fi
+
+if [[ -d log ]]; then
+  echo "Clean log dir" && \
+    rm -rf log/*
+fi
+
+if [[ -d storage ]]; then
+  echo "Clean Local Storage" && \
+    rm -rf storage/*
+fi
+
+docker container ls | grep ${SERVICE_NAME}-redis 1> /dev/null
+if [[ $? = 1 ]]; then
+  echo "Redis Stopped!"
+else
+  echo "Flush Redis Cache" && \
+  docker exec ${SERVICE_NAME}-redis bash -c "redis-cli -h 127.0.0.1 -p 6379 FLUSHALL"
+fi
