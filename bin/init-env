@@ -13,9 +13,7 @@ export VERSION=0.1.0
 export REDIS_PUBLISHED_PORT=6666 # Need to be change as well in .env.local
 export PROD_SERVER_PUBLISHED_PORT=3010
 export DEV_SERVER_PUBLISHED_PORT=3005
-export TEST_SERVER_PUBLISHED_PORT=3000
 export REDIS_COMMANDER_PUBLISHED_PORT=8081
-export CAPYBARA_SERVER_PUBLISHED_PORT=4343
 
 # Database
 export DB_PUBLISHED_PORT=3333 # Need to be change as well in .env.local
@@ -37,10 +35,3 @@ export LOG_LEVEL=debug
 export LOG_APPENDER=true
 
 export HUB_URL=http://chrome:4444/wd/hub
-
-# Convey which port Capybara should be starting test servers on; fail loudly
-# if we've neglected to configure it.
-export CAPYBARA_SERVER_PORT=3434
-# The test server WILL NOT BE AVAILABLE from outside the container if it binds
-# to 127.0.0.1. It must bind to 0.0.0.0 to be exposed to the outside world.
-export CAPYBARA_SERVER_HOST=0.0.0.0

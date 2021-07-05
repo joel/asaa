@@ -23,10 +23,6 @@ if ENV["HUB_URL"]
   Capybara.server_port = 3000
 end
 
-# Capybara.app_host = "http://127.0.0.1:#{ENV.fetch("TEST_SERVER_PUBLISHED_PORT")}"
-Capybara.server_host = ENV.fetch("CAPYBARA_SERVER_HOST")
-Capybara.server_port = ENV.fetch("CAPYBARA_SERVER_PORT")
-
 require "database_cleaner"
 require "database_cleaner/active_record"
 
