@@ -9,5 +9,6 @@ docker-compose run --rm \
   -e DB_HOST=${DB_HOST} \
   -e DB_USER=${DB_USER} \
   -e DB_PASSWORD=${DB_PASSWORD} \
-  -e ARG_APP_PATH=${ARG_APP_PATH} \
+  -e CHROME_HEADLESS=true \
+  -e HUB_URL=${HUB_URL} \
   chromedriver bash -c "bin/rails test:system"
