@@ -17,12 +17,10 @@ require "minitest/reporters"
 minitest_reporters = Minitest::Reporters::SpecReporter
 Minitest::Reporters.use! minitest_reporters.new
 
-if ENV["CAPYBARA_SERVER_HOST"]
-  # Use `fetch` to fail loudly if these variables aren't set. We might relax this
-  # and set defaults at some point, but for the moment we want to make sure we didn't
-  # miss a step.
-  Capybara.server_host = ENV.fetch("CAPYBARA_SERVER_HOST")
-  Capybara.server_port = ENV.fetch("CAPYBARA_SERVER_PORT")
+if ENV['HUB_URL']
+  Capybara.app_host = "http://#{IPSocket.getaddress(Socket.gethostname)}:3000"
+  Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
+  Capybara.server_port = 3000
 end
 
 require "database_cleaner"
