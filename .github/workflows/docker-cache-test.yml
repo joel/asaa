@@ -12,7 +12,7 @@ env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
   APP_IMAGE_TAG: base-development:0.1.0
-  APP_IMAGE_CACHE_TAG: base-development-cache
+  APP_IMAGE_CACHE_TAG: base-development-cache:0.1.0
   IMAGE_CACHE_DIR: /tmp/cache/docker-image
   IMAGE_CACHE_KEY: cache-image
   DB_PASSWORD: db_password
@@ -170,7 +170,7 @@ jobs:
           -v /var/run/docker.sock:/var/run/docker.sock
           -v ${{ env.TRIVY_CACHE_DIR }}:/root/.cache/
           aquasec/trivy
-          ${{ env.APP_IMAGE_CACHE_TAG }}
+          ${{ env.APP_IMAGE_TAG }}
 
   lint-app:
     needs: image-cache-or-build

@@ -17,7 +17,7 @@ require "minitest/reporters"
 minitest_reporters = Minitest::Reporters::SpecReporter
 Minitest::Reporters.use! minitest_reporters.new
 
-if ENV['HUB_URL']
+if ENV["HUB_URL"]
   Capybara.app_host = "http://#{IPSocket.getaddress(Socket.gethostname)}:3000"
   Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
   Capybara.server_port = 3000
