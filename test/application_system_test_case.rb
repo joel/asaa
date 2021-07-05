@@ -5,7 +5,13 @@ require "test_helper"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # http://chromedriver.chromium.org/capabilities
 
-  if ENV["CHROME_HEADLESS"]
+  if ENV["CAPYBARA_SERVER_HOST"]
+    driven_by :selenium, using: :chrome, screen_size: [1400, 1400],
+                        options: {
+                          browser: :remote,
+                          url: "http://host.docker.internal:9515",
+                        }
+  elsif ENV["CHROME_HEADLESS"]
     driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400], options: { url: ENV.fetch("HUB_URL") }
     Capybara.always_include_port = true
   else

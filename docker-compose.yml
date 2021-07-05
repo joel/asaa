@@ -54,6 +54,23 @@ services:
     <<: *backend
     command: /bin/bash
 
+  capybara:
+    <<: *backend
+    environment:
+      CAPYBARA_SERVER_PORT: ${CAPYBARA_SERVER_PORT}
+      CAPYBARA_SERVER_HOST: ${CAPYBARA_SERVER_HOST}
+    volumes:
+      - type: bind
+        source: .
+        target: ${ARG_APP_PATH}
+        consistency: cached
+    ports:
+      # Expose the test server port. Fail loudly if CAPYBARA_SERVER_PORT isn't set.
+      - "${CAPYBARA_SERVER_PORT}:${CAPYBARA_SERVER_PORT}"
+      # Also expose the usual app port
+      - "3000:3000"
+
+
 volumes:
   db-data:
   redis-data:
