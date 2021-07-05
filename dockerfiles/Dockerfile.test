@@ -13,7 +13,6 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential \
     libpq-dev \
     nodejs \
-    imagemagick \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf \
@@ -60,9 +59,17 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential \
     libpq-dev \
     nodejs \
+    imagemagick \
     chromium-driver \
-    chromium \
-    && rm -rf /var/lib/apt/lists/*
+    chromium
+
+RUN apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf \
+    /var/lib/apt \
+    /var/lib/dpkg \
+    /var/lib/cache \
+    /var/lib/log
 
 ENV BUNDLE_PATH /bundle
 ENV GEM_HOME /bundle
