@@ -11,8 +11,8 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
-  APP_IMAGE_TAG: iwl-development:0.1.0
-  APP_IMAGE_CACHE_TAG: iwl-development-cache
+  APP_IMAGE_TAG: base-development:0.1.0
+  APP_IMAGE_CACHE_TAG: base-development-cache
   IMAGE_CACHE_DIR: /tmp/cache/docker-image
   IMAGE_CACHE_KEY: cache-image
   DB_PASSWORD: db_password
@@ -120,7 +120,7 @@ jobs:
           -e REDIS_URL=redis://${{ env.REDIS_HOST }}:${{ env.REDIS_PORT }}/1 \
           -e DB_USER=${{ env.DB_USER }} \
           -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
-          console bash -c "bin/rails db:create db:migrate"
+          console bash -c "bin/rails db:setup"
 
     - name: Run test
       run: |
