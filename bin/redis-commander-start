@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+source ./bin/init-env
+
+# https://github.com/joeferner/redis-commander
+
+# REDIS_PORT
+# REDIS_HOST
+# REDIS_SOCKET
+# REDIS_TLS
+# REDIS_PASSWORD
+# REDIS_DB
+# REDIS_HOSTS
+# REDIS_OPTIONAL
+# SENTINEL_PORT
+# SENTINEL_HOST
+# SENTINELS
+# SENTINEL_NAME
+# SENTINEL_PASSWORD
+# HTTP_PASSWORD_FILE
+# HTTP_PASSWORD_HASH_FILE
+# REDIS_PASSWORD_FILE
+# SENTINEL_PASSWORD_FILE
+# K8S_SIGTERM
+
+docker container ls | grep ${SERVICE_NAME}-redis-commander 1> /dev/null
+if [[ $? = 1 ]]; then
+  echo "Starting Redis Commander... "
+  docker run --rm --detach \
+    --name ${SERVICE_NAME}-redis-commander \
+    --publish 8081:8081 \
+    --env REDIS_HOST=${SERVICE_NAME}-redis \
+    --env REDIS_PORT=6379 \
+    --network ${SERVICE_NAME}-bridge-docker-network \
+  rediscommander/redis-commander:latest
+  echo "Redis Commander running: http://localhost:${REDIS_COMMANDER_PUBLISHED_PORT}"
+else
+  echo "Redis Commander Started!"
+fi
+
