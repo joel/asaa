@@ -39,7 +39,7 @@ images=(
 
 for image in "${images[@]}"
 do
-  docker image ls | grep ${image} | grep latest 1> /dev/null
+  docker image ls | grep ${image} | grep ${VERSION} 1> /dev/null
   if [[ $? = 1 ]]; then
     echo "image [${image}] removed!"
   else

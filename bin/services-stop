@@ -2,11 +2,6 @@
 
 source ./bin/init-env
 
-./bin/docker-check
-if [[ $? = 1 ]]; then
-  exit 1
-fi
-
 if [ $# -gt 0 ]
   then
     echo "./bin/services-stop does not take arguments"

@@ -23,7 +23,7 @@ if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
 fi
 
 docker build \
-    --tag ${SERVICE_NAME}/${PF_TARGET}:latest \
+    --tag ${SERVICE_NAME}/${PF_TARGET}:${VERSION} \
     --build-arg ARG_RUBY_VERSION=${ARG_RUBY_VERSION} \
     --build-arg ARG_BUNDLER_VERSION=${ARG_BUNDLER_VERSION} \
     --build-arg ARG_APP_PATH=${ARG_APP_PATH} \
