@@ -5,7 +5,7 @@ export BASENAME=`basename "$CURRENT"`
 
 export SERVICE_NAME=asaa
 
-export DIR_NAME=#{BASENAME}
+export DIR_NAME=${BASENAME}
 
 export VERSION=0.1.0
 
@@ -34,4 +34,4 @@ export RAILS_LOG_TO_STDOUT=true
 export LOG_LEVEL=debug
 export LOG_APPENDER=true
 
-export HUB_URL=http://chrome:4444/wd/hub
+export HUB_URL=http://selenium-hub:4444/wd/hub
