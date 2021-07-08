@@ -35,6 +35,8 @@ services:
       - SELENIUM_PORT=${SELENIUM_PORT}
       - TEST_APP_HOST=${TEST_APP_HOST}
       - TEST_APP_PORT=${TEST_APP_PORT}
+    stdin_open: true
+    tty: true
     image: base-development:${VERSION}
     tmpfs:
       - /tmp
