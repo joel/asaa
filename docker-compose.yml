@@ -13,12 +13,13 @@ services:
     volumes:
       - redis-data:/data
 
-  chrome:
-    image: selenium/standalone-chrome:3.141.59
-    volumes:
-     - /dev/shm:/dev/shm
+  selenium:
+    # Ubuntu 20.04.1 LTS
+    image: selenium/standalone-chrome:3.141.59-20210422 # Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:25:53'
+    environment:
+      - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=
 
-  base: &base
+  web: &base
     build:
       context: .
       dockerfile: ./dockerfiles/Dockerfile.ci
@@ -29,34 +30,38 @@ services:
         ARG_BUNDLER_VERSION: ${ARG_BUNDLER_VERSION}
         ARG_APP_PATH: ${ARG_APP_PATH}
         ARG_RUBYGEMS_VERSION: ${ARG_RUBYGEMS_VERSION}
+      environment:
+        - SELENIUM_HOST=${SELENIUM_HOST}
+        - SELENIUM_PORT=${SELENIUM_PORT}
+        - TEST_APP_HOST=${TEST_APP_HOST}
+        - TEST_APP_PORT=${TEST_APP_PORT}
+
     image: base-development:${VERSION}
     tmpfs:
       - /tmp
 
-  wait-middleware: &wait-middleware
-    <<: *base
+  start-and-wait-for-services-to-be-up:
+    build:
+      context: .
+      dockerfile: Dockerfile.wait
     environment:
-      WAIT_HOSTS: db:3306,redis:6379,chrome:4444
+      WAIT_HOSTS: db:3306,redis:6379,selenium:4444
       WAIT_TIMEOUT: 90
       WAIT_HOST_CONNECT_TIMEOUT: 30
       WAIT_BEFORE: 2
       WAIT_AFTER: 0
       WAIT_SLEEP_INTERVAL: 1
     depends_on:
+      - web
       - db
       - redis
-      - chrome
+      - selenium
     command: /wait
 
   backend: &backend
     <<: *base
     stdin_open: true
     tty: true
-    environment:
-      HUB_URL: ${HUB_URL}
-    depends_on:
-      - db
-      - redis
 
   console:
     <<: *backend

@@ -2,7 +2,7 @@
 
 source ./bin/init-env
 
-docker-compose run --rm wait-middleware
+docker-compose run --rm start-and-wait-for-services-to-be-up
 
 docker-compose run --rm \
   -e DB_PORT=${DB_PORT} \
