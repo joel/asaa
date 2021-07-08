@@ -11,6 +11,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
                                   --disable-extensions] }
       )
 
+      puts("REMOTE URL [http://#{ENV['SELENIUM_HOST']}:#{ENV['SELENIUM_PORT']}/wd/hub]")
+
       Capybara::Selenium::Driver.new app,
                                      url: "http://#{ENV["SELENIUM_HOST"]}:#{ENV["SELENIUM_PORT"]}/wd/hub",
                                      browser: :remote,
@@ -25,6 +27,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     if ENV["TEST_APP_HOST"]
       Capybara.run_server = false
       Capybara.app_host = "http://#{ENV["TEST_APP_HOST"]}:#{ENV["TEST_APP_PORT"]}"
+
+      puts("APP URL [http://#{ENV['TEST_APP_HOST']}:#{ENV['TEST_APP_PORT']}]")
     end
   end
 end
