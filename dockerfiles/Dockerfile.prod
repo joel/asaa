@@ -110,6 +110,7 @@ RUN bundle config --global frozen 1 && \
 
 ADD . ${APP_PATH}
 
+ENV REDIS_URL redis://localhost:6379/1
 RUN SECRET_KEY_BASE="1" bin/rails assets:precompile --trace
 
 RUN bundle exec bootsnap precompile --gemfile app/ lib/

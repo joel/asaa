@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ./bin/init-env.secret
+
 export CURRENT=`pwd`
 export BASENAME=`basename "$CURRENT"`
 
@@ -33,5 +35,3 @@ export ARG_RUBYGEMS_VERSION=3.2.20
 export RAILS_LOG_TO_STDOUT=true
 export LOG_LEVEL=debug
 export LOG_APPENDER=true
-
-export HUB_URL=http://selenium-hub:4444/wd/hub

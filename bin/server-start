@@ -51,6 +51,7 @@ case "${PF_TARGET}" in
       --env RAILS_LOG_TO_STDOUT=${RAILS_LOG_TO_STDOUT} \
       --env LOG_LEVEL=${LOG_LEVEL} \
       --env LOG_APPENDER=${LOG_APPENDER} \
+      --env RAILS_MASTER_KEY="${RAILS_MASTER_KEY}" \
       --network ${SERVICE_NAME}-bridge-docker-network \
       --publish ${SERVER_PUBLISHED_PORT}:3000 \
       --env REDIS_URL=redis://${SERVICE_NAME}-redis:6379/1 \
