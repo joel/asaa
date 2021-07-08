@@ -260,9 +260,10 @@ jobs:
             -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
             console bash -c "bin/rails db:setup"
       -
-        name: Run test
+        name: Run UI System Test
         run: |
-          docker-compose run --rm \
+          docker-compose up start-and-wait-for-services-to-be-up && \
+          docker-compose exec \
             -e DB_HOST=${{ env.DB_HOST }} \
             -e DB_PORT=${{ env.DB_PORT }} \
             -e REDIS_URL=redis://${{ env.REDIS_HOST }}:${{ env.REDIS_PORT }}/1 \
@@ -272,4 +273,4 @@ jobs:
             -e SELENIUM_PORT=${{ env.SELENIUM_PORT }} \
             -e TEST_APP_HOST=${{ env.TEST_APP_HOST }} \
             -e TEST_APP_PORT=${{ env.TEST_APP_PORT }} \
-            console bash -c "bin/rails test:system"
+            -T web bash -c "RAILS_ENV=test bin/rails test:system"
