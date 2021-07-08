@@ -16,8 +16,6 @@ RUN apt-get update -qq && \
     curl \
     wget \
     imagemagick \
-    chromium \
-    chromium-driver \
     mupdf-tools \
     ffmpeg
 
@@ -33,7 +31,7 @@ ENV BUNDLE_PATH /bundle
 ENV GEM_HOME /bundle
 ENV BUNDLE_JOBS 20
 ENV BUNDLE_RETRY 5
-ENV BUNDLE_WITHOUT production development
+ENV BUNDLE_WITHOUT production
 ENV BUNDLE_CACHE_ALL true
 ENV BUNDLER_VERSION ${ARG_BUNDLER_VERSION}
 ENV RUBYGEMS_VERSION ${ARG_RUBYGEMS_VERSION}
