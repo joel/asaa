@@ -219,7 +219,7 @@ jobs:
             -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
             console bash -c "bin/bundle exec rubocop --parallel"
 
-  test-app:
+  test-ui:
     needs: image-cache-or-build
     strategy:
       matrix:
