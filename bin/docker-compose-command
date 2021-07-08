@@ -9,4 +9,5 @@ docker-compose run --rm \
   -e DB_HOST=${DB_HOST} \
   -e DB_USER=${DB_USER} \
   -e DB_PASSWORD=${DB_PASSWORD} \
+  -e REDIS_URL=redis://${SERVICE_NAME}-redis:6379/1 \
   console bash -c "$@"
