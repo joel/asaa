@@ -1,3 +1,31 @@
 #!/usr/bin/env bash
 
-./bin/docker-compose-command "RAILS_ENV=development bin/rails db:setup"
+source ./bin/init-env
+
+if [ $# -eq 0 ]
+  then
+    echo "Setup Docker Compose DB Container"
+    echo "You can start it on either production or development"
+    echo "e.g bin/docker-compose-setup dev"
+    echo "e.g bin/docker-compose-setup prod"
+fi
+
+PF_TARGET="${1:-dev}"
+
+POSSIBLE_VALUES=("prod" "dev")
+
+if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
+  echo "target should be either: prod or dev"
+  exit 1
+fi
+
+case "${PF_TARGET}" in
+  'prod')
+    FULL_SERVICE_ENV='production'
+  ;;
+  'dev')
+    FULL_SERVICE_ENV='development'
+  ;;
+esac
+
+./bin/docker-compose-command "RAILS_ENV=${FULL_SERVICE_ENV} bin/rails db:setup"
