@@ -30,12 +30,11 @@ services:
         ARG_BUNDLER_VERSION: ${ARG_BUNDLER_VERSION}
         ARG_APP_PATH: ${ARG_APP_PATH}
         ARG_RUBYGEMS_VERSION: ${ARG_RUBYGEMS_VERSION}
-      environment:
-        - SELENIUM_HOST=${SELENIUM_HOST}
-        - SELENIUM_PORT=${SELENIUM_PORT}
-        - TEST_APP_HOST=${TEST_APP_HOST}
-        - TEST_APP_PORT=${TEST_APP_PORT}
-
+    environment:
+      - SELENIUM_HOST=${SELENIUM_HOST}
+      - SELENIUM_PORT=${SELENIUM_PORT}
+      - TEST_APP_HOST=${TEST_APP_HOST}
+      - TEST_APP_PORT=${TEST_APP_PORT}
     image: base-development:${VERSION}
     tmpfs:
       - /tmp
