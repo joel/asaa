@@ -6,7 +6,7 @@ begin
   Dotenv.load('.env.local')
 
   ENV.each do |k,v|
-    puts("#{k} => #{v}")
+    # puts("#{k} => #{v}")
   end
 rescue LoadError
   puts("No Dotenv")
