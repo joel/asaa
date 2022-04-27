@@ -11,10 +11,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
                                   --disable-extensions] }
       )
 
-      puts("REMOTE URL [http://#{ENV["SELENIUM_HOST"]}:#{ENV["SELENIUM_PORT"]}/wd/hub]")
+      puts("REMOTE URL [http://#{ENV.fetch("SELENIUM_HOST", nil)}:#{ENV.fetch("SELENIUM_PORT", nil)}/wd/hub]")
 
       Capybara::Selenium::Driver.new app,
-                                     url: "http://#{ENV["SELENIUM_HOST"]}:#{ENV["SELENIUM_PORT"]}/wd/hub",
+                                     url: "http://#{ENV.fetch("SELENIUM_HOST",
+                                                              nil)}:#{ENV.fetch("SELENIUM_PORT", nil)}/wd/hub",
                                      browser: :remote,
                                      desired_capabilities: capabilities
     end
@@ -26,9 +27,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   setup do
     if ENV["TEST_APP_HOST"]
       Capybara.run_server = false
-      Capybara.app_host = "http://#{ENV["TEST_APP_HOST"]}:#{ENV["TEST_APP_PORT"]}"
+      Capybara.app_host = "http://#{ENV.fetch("TEST_APP_HOST", nil)}:#{ENV.fetch("TEST_APP_PORT", nil)}"
 
-      puts("APP URL [http://#{ENV["TEST_APP_HOST"]}:#{ENV["TEST_APP_PORT"]}]")
+      puts("APP URL [http://#{ENV.fetch("TEST_APP_HOST", nil)}:#{ENV.fetch("TEST_APP_PORT", nil)}]")
     end
   end
 end
