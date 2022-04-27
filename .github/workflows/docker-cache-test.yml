@@ -1,12 +1,6 @@
 name: Docker Cached Image Test CI
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**/*.md'
-      - 'LICENSE'
+on: [push]
 
 env:
   DOCKER_BUILDKIT: 1
