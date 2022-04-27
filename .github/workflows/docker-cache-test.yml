@@ -16,10 +16,10 @@ env:
   DB_FORWARDED_PORT: 3306
   REDIS_HOST: redis
   REDIS_FORWARDED_PORT: 6379
-  ARG_RUBY_VERSION: 2.7.6
-  ARG_BUNDLER_VERSION: 2.2.20
+  ARG_RUBY_VERSION: 2.7.6 # https://www.ruby-lang.org/en/downloads/releases/
+  ARG_BUNDLER_VERSION: 2.3.12 # https://rubygems.org/gems/bundler
   ARG_APP_PATH: /src
-  ARG_RUBYGEMS_VERSION: 3.2.20
+  ARG_RUBYGEMS_VERSION: 3.3.12 # https://github.com/rubygems/rubygems/releases
   REDIS_URL: redis://redis:6379/1
   BUNDLE_PATH: /bundle
   GEM_HOME: /bundle
