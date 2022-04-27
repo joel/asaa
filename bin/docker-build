@@ -22,10 +22,14 @@ if [[ ! " ${POSSIBLE_VALUES[@]} " =~ " ${PF_TARGET} " ]]; then
   exit 1
 fi
 
+echo "creating Docker image ${SERVICE_NAME}/${PF_TARGET}:${VERSION}"
+
 docker build \
     --tag ${SERVICE_NAME}/${PF_TARGET}:${VERSION} \
     --build-arg ARG_RUBY_VERSION=${ARG_RUBY_VERSION} \
     --build-arg ARG_BUNDLER_VERSION=${ARG_BUNDLER_VERSION} \
     --build-arg ARG_APP_PATH=${ARG_APP_PATH} \
     --build-arg ARG_RUBYGEMS_VERSION=${ARG_RUBYGEMS_VERSION} \
+    --progress=plain \
+    --no-cache \
     . -f dockerfiles/Dockerfile.${PF_TARGET}

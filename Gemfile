@@ -3,14 +3,14 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.3"
+ruby "2.7.6"
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 5.2.6"
+gem "rails", "5.2.6"
 # Use mysql as the database for Active Record
 gem "mysql2", ">= 0.4.4", "< 0.6.0"
 # Use Puma as the app server
@@ -79,6 +79,7 @@ group :test do
   gem "selenium-webdriver"
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem "chromedriver-helper"
+  gem "database_cleaner"
   gem "database_cleaner-active_record"
   gem "minitest-focus"
   gem "minitest-reporters"
