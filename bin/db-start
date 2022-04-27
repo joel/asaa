@@ -28,7 +28,7 @@ function cmd() {
     array+=("--publish ${DB_PUBLISHED_PORT}:3306")
   fi
 
-  array+=("mysql:5.7.33")
+  array+=("mariadb:latest")
 
   CMD=""
   for line in ${array[@]}; do
@@ -47,7 +47,7 @@ fi
 docker container ls | grep ${SERVICE_NAME}-db 1> /dev/null
 if [[ $? = 1 ]]; then
   echo "Starting DB... "
-  eval cmd $1 > /dev/null 2>&1
+  eval cmd $1
 else
   echo "DB Started!"
 fi

@@ -27,7 +27,7 @@ export DB_HOST=db
 
 # Docker Build Args
 export ARG_APP_PATH=/src
-export ARG_RUBY_VERSION=2.7.3
+export ARG_RUBY_VERSION=2.7.6
 export ARG_BUNDLER_VERSION=2.2.20
 export ARG_RUBYGEMS_VERSION=3.2.20
 

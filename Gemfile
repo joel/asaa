@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.3"
+ruby "2.7.6"
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"
@@ -79,6 +79,7 @@ group :test do
   gem "selenium-webdriver"
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem "chromedriver-helper"
+  gem "database_cleaner"
   gem "database_cleaner-active_record"
   gem "minitest-focus"
   gem "minitest-reporters"
